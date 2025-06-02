@@ -1,0 +1,161 @@
+<div class="reservation-page py-5">
+  <div class="container">
+    <!-- Información del restaurante -->
+    <div class="restaurant-header mb-4" *ngIf="restaurant">
+      <div class="row align-items-center">
+        <div class="col-md-3">
+          <div class="restaurant-image rounded" [style.background-image]="'url(' + restaurant.image + ')'">
+            <div class="restaurant-rating">
+              <span *ngFor="let star of [].constructor(restaurant.rating)">★</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-9">
+          <h2 class="restaurant-name">{{restaurant.name}}</h2>
+          <p class="restaurant-details">
+            <span class="cuisine">{{restaurant.cuisine}}</span> · 
+            <span class="location">{{restaurant.location}}</span>
+          </p>
+          <p class="restaurant-address">
+            <i class="bi bi-geo-alt"></i> {{restaurant.address}}
+          </p>
+          <p class="restaurant-capacity">
+            <i class="bi bi-people"></i> Capacidad: {{restaurant.capacity}} personas
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Formulario de reserva -->
+    <div class="reservation-form-container">
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+              <h3 class="mb-0">Reserva tu mesa</h3>
+            </div>
+            <div class="card-body p-4">
+              <!-- Alerta de confirmación -->
+              <div *ngIf="showConfirmation" class="alert alert-success" role="alert">
+                <div class="d-flex align-items-center">
+                  <i class="bi bi-check-circle-fill me-2" style="font-size: 1.5rem;"></i>
+                  <div>
+                    <h4 class="alert-heading mb-1">¡Reserva confirmada!</h4>
+                    <p class="mb-0">Hemos enviado los detalles a tu correo electrónico.</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Formulario -->
+              <form [formGroup]="reservationForm" (ngSubmit)="submitReservation()" *ngIf="!showConfirmation">
+                <div class="row g-3">
+                  <!-- Selector de fecha -->
+                  <div class="col-md-6 mb-3">
+                    <label for="date" class="form-label">Fecha</label>
+                    <input 
+                      type="date" 
+                      class="form-control" 
+                      id="date" 
+                      formControlName="date"
+                      [min]="minDate.toISOString().split('T')[0]"
+                      [max]="maxDate.toISOString().split('T')[0]"
+                      (change)="onDateChange($event.target)"
+                      [class.is-invalid]="formSubmitted && dateControl?.invalid"
+                    >
+                    <div *ngIf="formSubmitted && dateControl?.invalid" class="invalid-feedback">
+                      Por favor selecciona una fecha válida.
+                    </div>
+                    <small class="text-muted">Los domingos no disponible</small>
+                  </div>
+
+                  <!-- Selector de hora -->
+                  <div class="col-md-6 mb-3">
+                    <label for="time" class="form-label">Hora</label>
+                    <select 
+                      class="form-select" 
+                      id="time" 
+                      formControlName="time"
+                      [class.is-invalid]="formSubmitted && timeControl?.invalid"
+                    >
+                      <option value="" disabled selected>Selecciona una hora</option>
+                      <option *ngFor="let hour of availableHours" [value]="hour">{{hour}}</option>
+                    </select>
+                    <div *ngIf="formSubmitted && timeControl?.invalid" class="invalid-feedback">
+                      Por favor selecciona una hora.
+                    </div>
+                  </div>
+
+                  <!-- Número de personas -->
+                  <div class="col-md-6 mb-3">
+                    <label for="people" class="form-label">Número de personas</label>
+                    <select 
+                      class="form-select" 
+                      id="people" 
+                      formControlName="people"
+                      [class.is-invalid]="formSubmitted && peopleControl?.invalid"
+                    >
+                      <option *ngFor="let num of personOptions" [value]="num">{{num}} persona<span *ngIf="num > 1">s</span></option>
+                      <option value="11">Más de 10 personas</option>
+                    </select>
+                    <div *ngIf="formSubmitted && peopleControl?.invalid" class="invalid-feedback">
+                      Por favor selecciona el número de personas.
+                    </div>
+                  </div>
+
+                  <!-- Información personal -->
+                  <div class="col-md-6 mb-3">
+                    <label for="name" class="form-label">Nombre completo</label>
+                    <input 
+                      type="text" 
+                      class="form-control" 
+                      id="name" 
+                      formControlName="name"
+                      placeholder="Tu nombre y apellido"
+                      [class.is-invalid]="formSubmitted && nameControl?.invalid"
+                    >
+                    <div *ngIf="formSubmitted && nameControl?.invalid" class="invalid-feedback">
+                      Por favor ingresa tu nombre completo.
+                    </div>
+                  </div>
+
+                  <div class="col-md-6 mb-3">
+                    <label for="email" class="form-label">Correo electrónico</label>
+                    <input 
+                      type="email" 
+                      class="form-control" 
+                      id="email" 
+                      formControlName="email"
+                      placeholder="correo@ejemplo.com"
+                      [class.is-invalid]="formSubmitted && emailControl?.invalid"
+                    >
+                    <div *ngIf="formSubmitted && emailControl?.invalid" class="invalid-feedback">
+                      Por favor ingresa un correo electrónico válido.
+                    </div>
+                  </div>
+
+                  <div class="col-md-6 mb-3">
+                    <label for="phone" class="form-label">Teléfono (opcional)</label>
+                    <input 
+                      type="tel" 
+                      class="form-control" 
+                      id="phone" 
+                      formControlName="phone"
+                      placeholder="+56 9 1234 5678"
+                    >
+                  </div>
+
+                  <!-- Botón de confirmación -->
+                  <div class="col-12 mt-4 text-center">
+                    <button type="submit" class="btn btn-primary btn-lg px-5">
+                      <i class="bi bi-calendar-check me-2"></i>Confirmar reserva
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,80 @@
+/* You can add global styles to this file, and also import other style files */
+@import 'bootstrap/scss/bootstrap';
+
+body {
+  margin: 0;
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #333;
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+/* Colores del tema */
+:root {
+  --primary-color: #8b0000; /* Rojo oscuro */
+  --primary-color-dark: #6b0000; /* Rojo más oscuro para hover */
+  --secondary-color: #556b2f; /* Verde oliva */
+  --text-color: #333333;
+  --light-color: #f8f9fa;
+  --light-bg: #f9f9f9; /* Fondo claro para páginas */
+  --dark-color: #343a40;
+  --border-radius: 8px;
+}
+
+/* Estilos de botones */
+.btn {
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  padding: 0.5rem 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: darken(#8b0000, 10%);
+  border-color: darken(#8b0000, 10%);
+}
+
+/* Estilos de tarjetas */
+.card {
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos de headings */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+/* Estilos de links */
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: darken(#8b0000, 10%);
+  text-decoration: none;
+}

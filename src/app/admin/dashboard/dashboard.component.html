@@ -1,0 +1,151 @@
+<div class="dashboard-container">
+  <!-- Encabezado -->
+  <div class="section-header">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <h2 class="section-title">Dashboard</h2>
+        <p class="text-muted">Información general de {{restaurantName}}</p>
+      </div>
+      <div class="current-date">
+        <i class="bi bi-calendar3 me-2"></i> {{currentMonth}}
+      </div>
+    </div>
+  </div>
+  
+  <!-- Estadísticas principales -->
+  <div class="row mb-4">
+    <div class="col-md-3 col-sm-6 mb-3" *ngFor="let stat of stats">
+      <div class="card stat-card h-100">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="stat-title">{{stat.title}}</h5>
+            <div class="stat-icon" [ngClass]="'bg-' + stat.color + '-light'">
+              <i class="bi" [ngClass]="'bi-' + stat.icon + ' text-' + stat.color"></i>
+            </div>
+          </div>
+          <div class="d-flex align-items-end">
+            <h3 class="stat-value mb-0">{{stat.value}}</h3>
+            <div class="stat-change ms-2" *ngIf="stat.change !== undefined">
+              <span [ngClass]="stat.change >= 0 ? 'text-success' : 'text-danger'">
+                <i class="bi" [ngClass]="stat.change >= 0 ? 'bi-arrow-up' : 'bi-arrow-down'"></i>
+                {{stat.change >= 0 ? stat.change : -stat.change}}%
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Gráfico y Reservas recientes -->
+  <div class="row mb-4">
+    <!-- Gráfico de barras semanal -->
+    <div class="col-lg-8 mb-4 mb-lg-0">
+      <div class="card h-100">
+        <div class="card-header">
+          <h3 class="card-title">Reservas semanales</h3>
+        </div>
+        <div class="card-body">
+          <div class="chart-container">
+            <div class="chart-bars">
+              <div class="chart-bar-wrapper" *ngFor="let stat of weeklyStats">
+                <div class="chart-bar" [style.height]="getBarHeight(stat.count)"></div>
+                <div class="chart-bar-value">{{stat.count}}</div>
+                <div class="chart-bar-label">{{stat.day.substring(0, 3)}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Reservas recientes -->
+    <div class="col-lg-4">
+      <div class="card h-100">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h3 class="card-title">Reservas recientes</h3>
+          <a href="/admin/reservas" class="text-primary">Ver todas</a>
+        </div>
+        <div class="card-body p-0">
+          <ul class="recent-reservations-list">
+            <li class="reservation-item" *ngFor="let reservation of recentReservations">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <div class="client-name">{{reservation.clientName}}</div>
+                  <div class="reservation-meta">
+                    <span><i class="bi bi-calendar me-1"></i> {{reservation.date | date:'dd/MM/yyyy'}}</span>
+                    <span><i class="bi bi-clock me-1"></i> {{reservation.time}}</span>
+                    <span><i class="bi bi-people me-1"></i> {{reservation.people}}</span>
+                  </div>
+                </div>
+                <span class="reservation-status" [ngClass]="getStatusClass(reservation.status)">
+                  {{getStatusText(reservation.status)}}
+                </span>
+              </div>
+            </li>
+            <li class="text-center py-3" *ngIf="recentReservations.length === 0">
+              <p class="text-muted mb-0">No hay reservas recientes</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Info Cards -->
+  <div class="row">
+    <!-- Tips y Recomendaciones -->
+    <div class="col-md-6 mb-4">
+      <div class="card h-100">
+        <div class="card-header">
+          <h3 class="card-title">Tips y Recomendaciones</h3>
+        </div>
+        <div class="card-body">
+          <ul class="tips-list">
+            <li class="tip-item">
+              <i class="bi bi-lightbulb text-warning"></i>
+              <span>La ocupación promedio es mayor los fines de semana. Considera aumentar el personal.</span>
+            </li>
+            <li class="tip-item">
+              <i class="bi bi-graph-up text-success"></i>
+              <span>Las reservas han aumentado un 12.5% respecto al mes anterior.</span>
+            </li>
+            <li class="tip-item">
+              <i class="bi bi-exclamation-triangle text-danger"></i>
+              <span>Hay 3 reservas pendientes de confirmación para mañana.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Acciones rápidas -->
+    <div class="col-md-6 mb-4">
+      <div class="card h-100">
+        <div class="card-header">
+          <h3 class="card-title">Acciones rápidas</h3>
+        </div>
+        <div class="card-body">
+          <div class="quick-actions">
+            <a href="/admin/reservas" class="quick-action-card">
+              <i class="bi bi-calendar-plus"></i>
+              <span>Nueva reserva</span>
+            </a>
+            <a href="/admin/disponibilidad" class="quick-action-card">
+              <i class="bi bi-clock"></i>
+              <span>Editar horarios</span>
+            </a>
+            <a href="/admin/perfil" class="quick-action-card">
+              <i class="bi bi-gear"></i>
+              <span>Configuración</span>
+            </a>
+            <a href="/" class="quick-action-card">
+              <i class="bi bi-box-arrow-right"></i>
+              <span>Ir al sitio</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

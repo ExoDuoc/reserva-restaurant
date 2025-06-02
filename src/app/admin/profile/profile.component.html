@@ -1,0 +1,376 @@
+<div class="profile-container">
+  <!-- Encabezado -->
+  <div class="section-header">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <h2 class="section-title">Perfil y Ajustes</h2>
+        <p class="text-muted">Gestiona la información de tu restaurante y cuenta</p>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Alerta de éxito -->
+  <div class="alert alert-success alert-dismissible fade show" role="alert" *ngIf="showSuccessAlert">
+    <i class="bi bi-check-circle-fill me-2"></i>
+    Los cambios han sido guardados correctamente.
+    <button type="button" class="btn-close" (click)="showSuccessAlert = false"></button>
+  </div>
+  
+  <!-- Navegación por pestañas -->
+  <div class="profile-tabs">
+    <ul class="nav nav-tabs mb-4">
+      <li class="nav-item">
+        <button 
+          class="nav-link" 
+          [ngClass]="{'active': activeTab === 'restaurant'}"
+          (click)="setActiveTab('restaurant')"
+        >
+          <i class="bi bi-shop me-2"></i>
+          Datos del Restaurante
+        </button>
+      </li>
+      <li class="nav-item">
+        <button 
+          class="nav-link" 
+          [ngClass]="{'active': activeTab === 'admin'}"
+          (click)="setActiveTab('admin')"
+        >
+          <i class="bi bi-person me-2"></i>
+          Perfil de Administrador
+        </button>
+      </li>
+      <li class="nav-item">
+        <button 
+          class="nav-link" 
+          [ngClass]="{'active': activeTab === 'settings'}"
+          (click)="setActiveTab('settings')"
+        >
+          <i class="bi bi-gear me-2"></i>
+          Configuración
+        </button>
+      </li>
+    </ul>
+  </div>
+  
+  <!-- Formulario de Perfil de Restaurante -->
+  <div class="profile-form-container" *ngIf="activeTab === 'restaurant'">
+    <form [formGroup]="restaurantForm" (ngSubmit)="saveRestaurantProfile()">
+      <div class="card mb-4">
+        <div class="card-header">
+          <h3 class="card-title">Información del Restaurante</h3>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <div class="form-group">
+                <label for="restaurantName">Nombre del Restaurante *</label>
+                <input 
+                  type="text" 
+                  id="restaurantName" 
+                  class="form-control" 
+                  formControlName="name"
+                  [ngClass]="{'is-invalid': restaurantNameInvalid}"
+                >
+                <div class="invalid-feedback" *ngIf="restaurantNameInvalid">
+                  El nombre es obligatorio y debe tener al menos 3 caracteres.
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="form-group">
+                <label for="cuisine">Tipo de Cocina *</label>
+                <select 
+                  id="cuisine" 
+                  class="form-select" 
+                  formControlName="cuisine"
+                >
+                  <option *ngFor="let type of cuisineTypes" [value]="type">{{type}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-group mb-3">
+            <label for="description">Descripción *</label>
+            <textarea 
+              id="description" 
+              class="form-control" 
+              rows="4" 
+              formControlName="description"
+            ></textarea>
+          </div>
+          
+          <div class="row">
+            <div class="col-md-8 mb-3">
+              <div class="form-group">
+                <label for="address">Dirección *</label>
+                <input 
+                  type="text" 
+                  id="address" 
+                  class="form-control" 
+                  formControlName="address"
+                >
+              </div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <div class="form-group">
+                <label for="priceRange">Rango de Precio *</label>
+                <select 
+                  id="priceRange" 
+                  class="form-select" 
+                  formControlName="priceRange"
+                >
+                  <option *ngFor="let range of priceRanges" [value]="range.value">{{range.label}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <div class="form-group">
+                <label for="phone">Teléfono *</label>
+                <input 
+                  type="tel" 
+                  id="phone" 
+                  class="form-control" 
+                  formControlName="phone"
+                >
+              </div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <div class="form-group">
+                <label for="email">Email *</label>
+                <input 
+                  type="email" 
+                  id="email" 
+                  class="form-control" 
+                  formControlName="email"
+                  [ngClass]="{'is-invalid': restaurantEmailInvalid}"
+                >
+                <div class="invalid-feedback" *ngIf="restaurantEmailInvalid">
+                  Por favor, introduce un email válido.
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <div class="form-group">
+                <label for="website">Sitio Web</label>
+                <input 
+                  type="text" 
+                  id="website" 
+                  class="form-control" 
+                  formControlName="website"
+                >
+              </div>
+            </div>
+          </div>
+          
+          <div class="mt-4 d-flex justify-content-end">
+            <button type="submit" class="btn btn-action">
+              <i class="bi bi-save me-2"></i> Guardar Cambios
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  
+  <!-- Formulario de Perfil de Administrador -->
+  <div class="profile-form-container" *ngIf="activeTab === 'admin'">
+    <form [formGroup]="adminForm" (ngSubmit)="saveAdminProfile()">
+      <div class="card mb-4">
+        <div class="card-header">
+          <h3 class="card-title">Perfil de Administrador</h3>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <div class="form-group">
+                <label for="adminName">Nombre *</label>
+                <input 
+                  type="text" 
+                  id="adminName" 
+                  class="form-control" 
+                  formControlName="name"
+                >
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="form-group">
+                <label for="role">Rol *</label>
+                <input 
+                  type="text" 
+                  id="role" 
+                  class="form-control" 
+                  formControlName="role"
+                >
+              </div>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <div class="form-group">
+                <label for="adminEmail">Email *</label>
+                <input 
+                  type="email" 
+                  id="adminEmail" 
+                  class="form-control" 
+                  formControlName="email"
+                  [ngClass]="{'is-invalid': adminEmailInvalid}"
+                >
+                <div class="invalid-feedback" *ngIf="adminEmailInvalid">
+                  Por favor, introduce un email válido.
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="form-group">
+                <label for="adminPhone">Teléfono</label>
+                <input 
+                  type="tel" 
+                  id="adminPhone" 
+                  class="form-control" 
+                  formControlName="phone"
+                >
+              </div>
+            </div>
+          </div>
+          
+          <div class="password-section mt-4">
+            <h4 class="subsection-title">Cambiar Contraseña</h4>
+            <p class="text-muted small mb-3">Deja en blanco si no quieres cambiar la contraseña</p>
+            
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <div class="form-group">
+                  <label for="password">Nueva Contraseña</label>
+                  <input 
+                    type="password" 
+                    id="password" 
+                    class="form-control" 
+                    formControlName="password"
+                  >
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <div class="form-group">
+                  <label for="confirmPassword">Confirmar Contraseña</label>
+                  <input 
+                    type="password" 
+                    id="confirmPassword" 
+                    class="form-control" 
+                    formControlName="confirmPassword"
+                    [ngClass]="{'is-invalid': passwordMismatch}"
+                  >
+                  <div class="invalid-feedback" *ngIf="passwordMismatch">
+                    Las contraseñas no coinciden.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="mt-4 d-flex justify-content-end">
+            <button type="submit" class="btn btn-action">
+              <i class="bi bi-save me-2"></i> Guardar Cambios
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  
+  <!-- Configuración -->
+  <div class="profile-form-container" *ngIf="activeTab === 'settings'">
+    <form [formGroup]="settingsForm" (ngSubmit)="saveSettings()">
+      <div class="card mb-4">
+        <div class="card-header">
+          <h3 class="card-title">Configuración General</h3>
+        </div>
+        <div class="card-body">
+          <div class="settings-section">
+            <h4 class="subsection-title">Notificaciones</h4>
+            
+            <div class="form-check mb-3">
+              <input 
+                type="checkbox" 
+                id="allowEmailNotifications" 
+                class="form-check-input" 
+                formControlName="allowEmailNotifications"
+              >
+              <label class="form-check-label" for="allowEmailNotifications">
+                Recibir notificaciones por email
+              </label>
+              <div class="form-text">Te enviaremos un email cuando recibas una nueva reserva.</div>
+            </div>
+            
+            <div class="form-check mb-4">
+              <input 
+                type="checkbox" 
+                id="allowSmsNotifications" 
+                class="form-check-input" 
+                formControlName="allowSmsNotifications"
+              >
+              <label class="form-check-label" for="allowSmsNotifications">
+                Recibir notificaciones por SMS
+              </label>
+              <div class="form-text">Te enviaremos un SMS cuando recibas una nueva reserva.</div>
+            </div>
+          </div>
+          
+          <div class="settings-section">
+            <h4 class="subsection-title">Reservas</h4>
+            
+            <div class="form-check mb-3">
+              <input 
+                type="checkbox" 
+                id="autoConfirmReservations" 
+                class="form-check-input" 
+                formControlName="autoConfirmReservations"
+              >
+              <label class="form-check-label" for="autoConfirmReservations">
+                Auto-confirmar reservas
+              </label>
+              <div class="form-text">Las reservas se confirmarán automáticamente sin requerir aprobación manual.</div>
+            </div>
+            
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <div class="form-group">
+                  <label for="defaultTimeSlotDuration">Duración por defecto de cada reserva (minutos) *</label>
+                  <input 
+                    type="number" 
+                    id="defaultTimeSlotDuration" 
+                    class="form-control" 
+                    formControlName="defaultTimeSlotDuration"
+                    min="15"
+                  >
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <div class="form-group">
+                  <label for="maxDaysInAdvance">Días máximos de antelación para reservar *</label>
+                  <input 
+                    type="number" 
+                    id="maxDaysInAdvance" 
+                    class="form-control" 
+                    formControlName="maxDaysInAdvance"
+                    min="1"
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="mt-4 d-flex justify-content-end">
+            <button type="submit" class="btn btn-action">
+              <i class="bi bi-save me-2"></i> Guardar Cambios
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

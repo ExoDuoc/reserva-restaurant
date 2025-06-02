@@ -1,0 +1,109 @@
+.reservation-page {
+  background-color: var(--light-bg);
+  min-height: calc(100vh - 140px);
+}
+
+.restaurant-header {
+  background-color: white;
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.restaurant-image {
+  height: 150px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.restaurant-rating {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background-color: rgba(0,0,0,0.7);
+  color: gold;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+}
+
+.restaurant-name {
+  color: var(--primary-color);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.restaurant-details {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.cuisine {
+  color: var(--primary-color);
+  font-weight: 500;
+}
+
+.restaurant-address, .restaurant-capacity {
+  color: #666;
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+
+.restaurant-address i, .restaurant-capacity i {
+  margin-right: 5px;
+  color: #888;
+}
+
+.reservation-form-container {
+  margin-top: 2rem;
+}
+
+.card {
+  border: none;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+}
+
+.card-header {
+  background-color: var(--primary-color);
+  padding: 1rem 1.5rem;
+}
+
+.card-header h3 {
+  font-weight: 600;
+  font-size: 1.3rem;
+}
+
+.form-label {
+  font-weight: 500;
+  color: #555;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover, .btn-primary:focus {
+  background-color: var(--primary-color-dark);
+  border-color: var(--primary-color-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.alert-success {
+  background-color: #dff6e1;
+  border-color: #c3e6cb;
+  color: #276749;
+}
+
+.alert-heading {
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.invalid-feedback {
+  font-size: 0.8rem;
+}

@@ -1,0 +1,153 @@
+.section-title {
+  color: #1e293b;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.card-title {
+  color: #1e293b;
+  font-weight: 600;
+  font-size: 1.25rem;
+  margin: 0;
+}
+
+// Estilos para las pestañas
+.nav-tabs {
+  border-bottom: 1px solid #e2e8f0;
+  
+  .nav-item {
+    margin-right: 0.5rem;
+  }
+  
+  .nav-link {
+    color: #64748b;
+    border: none;
+    padding: 0.75rem 1rem;
+    font-weight: 500;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s ease;
+    
+    &:hover, &:focus {
+      border-color: #cbd5e1;
+      background-color: transparent;
+    }
+    
+    &.active {
+      color: #3b82f6;
+      background-color: transparent;
+      border-bottom: 2px solid #3b82f6;
+      font-weight: 600;
+    }
+  }
+}
+
+// Estilos para los formularios
+.form-group {
+  label {
+    font-weight: 500;
+    color: #334155;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+  
+  .form-control, .form-select {
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 0.625rem 1rem;
+    transition: all 0.2s ease;
+    
+    &:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.15);
+    }
+  }
+  
+  textarea.form-control {
+    resize: vertical;
+  }
+}
+
+// Estilos para subsecciones
+.subsection-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+// Estilos para formulario de configuración
+.settings-section {
+  margin-bottom: 2rem;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.form-check {
+  .form-check-input {
+    &:checked {
+      background-color: #3b82f6;
+      border-color: #3b82f6;
+    }
+    
+    &:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.15);
+    }
+  }
+  
+  .form-check-label {
+    font-weight: 500;
+    color: #334155;
+  }
+  
+  .form-text {
+    margin-left: 1.75rem;
+    font-size: 0.85rem;
+    color: #64748b;
+  }
+}
+
+// Botón de acción principal
+.btn-action {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.625rem 1.25rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  
+  &:hover, &:focus {
+    background-color: #2563eb;
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+// Responsive
+@media (max-width: 767px) {
+  .nav-tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 1px;
+    
+    .nav-item {
+      white-space: nowrap;
+    }
+  }
+  
+  .password-section {
+    h4 {
+      font-size: 1rem;
+    }
+  }
+}

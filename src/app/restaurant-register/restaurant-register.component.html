@@ -1,0 +1,307 @@
+<div class="register-container">
+  <div class="register-card">
+    <div class="header">
+      <h1>Registro de Restaurante</h1>
+      <p class="subtitle">Completa la información para comenzar a usar el sistema de reservas</p>
+    </div>
+    
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
+      <div class="form-section">
+        <h2 class="section-title">Información del Restaurante</h2>
+        
+        <!-- Logo upload -->
+        <div class="logo-upload-container">
+          <div class="logo-preview" *ngIf="logoPreview; else noLogo">
+            <img [src]="logoPreview" alt="Logo preview">
+            <button type="button" class="btn-remove-logo" (click)="resetLogoPreview()">
+              <i class="bi bi-x-circle"></i>
+            </button>
+          </div>
+          <ng-template #noLogo>
+            <div class="logo-placeholder">
+              <i class="bi bi-image"></i>
+              <span>Logo del restaurante</span>
+            </div>
+          </ng-template>
+          
+          <div class="logo-upload">
+            <label for="logo" class="btn btn-outline-primary upload-btn">
+              <i class="bi bi-upload me-2"></i> Subir logo
+            </label>
+            <input 
+              type="file" 
+              id="logo" 
+              accept="image/*" 
+              (change)="onLogoSelected($event)" 
+              class="d-none">
+            <div class="form-text">Formato JPG o PNG, máximo 2MB</div>
+          </div>
+        </div>
+        
+        <!-- Información básica -->
+        <div class="form-group">
+          <label for="name">Nombre del restaurante*</label>
+          <input 
+            type="text" 
+            id="name" 
+            formControlName="name" 
+            class="form-control" 
+            [ngClass]="{'is-invalid': nameInvalid}"
+            placeholder="Ej. La Parrilla">
+          <div class="invalid-feedback" *ngIf="nameInvalid">
+            <span *ngIf="registerForm.get('name')?.errors?.['required']">El nombre es obligatorio</span>
+            <span *ngIf="registerForm.get('name')?.errors?.['minlength']">El nombre debe tener al menos 3 caracteres</span>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="email">Email del restaurante*</label>
+              <input 
+                type="email" 
+                id="email" 
+                formControlName="email" 
+                class="form-control" 
+                [ngClass]="{'is-invalid': emailInvalid}"
+                placeholder="info@restaurante.com">
+              <div class="invalid-feedback" *ngIf="emailInvalid">
+                <span *ngIf="registerForm.get('email')?.errors?.['required']">El email es obligatorio</span>
+                <span *ngIf="registerForm.get('email')?.errors?.['email']">Ingresa un email válido</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="phone">Teléfono*</label>
+              <input 
+                type="tel" 
+                id="phone" 
+                formControlName="phone" 
+                class="form-control" 
+                [ngClass]="{'is-invalid': phoneInvalid}"
+                placeholder="+34 123 456 789">
+              <div class="invalid-feedback" *ngIf="phoneInvalid">
+                <span *ngIf="registerForm.get('phone')?.errors?.['required']">El teléfono es obligatorio</span>
+                <span *ngIf="registerForm.get('phone')?.errors?.['pattern']">Ingresa un teléfono válido</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="address">Dirección*</label>
+          <input 
+            type="text" 
+            id="address" 
+            formControlName="address" 
+            class="form-control" 
+            [ngClass]="{'is-invalid': addressInvalid}"
+            placeholder="Calle, número">
+          <div class="invalid-feedback" *ngIf="addressInvalid">La dirección es obligatoria</div>
+        </div>
+        
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="city">Ciudad*</label>
+              <input 
+                type="text" 
+                id="city" 
+                formControlName="city" 
+                class="form-control" 
+                [ngClass]="{'is-invalid': cityInvalid}"
+                placeholder="Madrid">
+              <div class="invalid-feedback" *ngIf="cityInvalid">La ciudad es obligatoria</div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="zipCode">Código postal*</label>
+              <input 
+                type="text" 
+                id="zipCode" 
+                formControlName="zipCode" 
+                class="form-control" 
+                [ngClass]="{'is-invalid': zipCodeInvalid}"
+                placeholder="28001">
+              <div class="invalid-feedback" *ngIf="zipCodeInvalid">
+                <span *ngIf="registerForm.get('zipCode')?.errors?.['required']">El código postal es obligatorio</span>
+                <span *ngIf="registerForm.get('zipCode')?.errors?.['pattern']">Solo números</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="cuisine">Tipo de cocina*</label>
+              <select 
+                id="cuisine" 
+                formControlName="cuisine" 
+                class="form-select" 
+                [ngClass]="{'is-invalid': cuisineInvalid}">
+                <option value="" selected disabled>Selecciona un tipo</option>
+                <option *ngFor="let type of cuisineTypes" [value]="type">{{type}}</option>
+              </select>
+              <div class="invalid-feedback" *ngIf="cuisineInvalid">Selecciona un tipo de cocina</div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="priceRange">Rango de precios*</label>
+              <select 
+                id="priceRange" 
+                formControlName="priceRange" 
+                class="form-select">
+                <option *ngFor="let range of priceRanges" [value]="range.value">{{range.label}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="description">Descripción del restaurante*</label>
+          <textarea 
+            id="description" 
+            formControlName="description" 
+            class="form-control" 
+            [ngClass]="{'is-invalid': descriptionInvalid}"
+            rows="3" 
+            placeholder="Describe tu restaurante en pocas palabras"></textarea>
+          <div class="invalid-feedback" *ngIf="descriptionInvalid">
+            <span *ngIf="registerForm.get('description')?.errors?.['required']">La descripción es obligatoria</span>
+            <span *ngIf="registerForm.get('description')?.errors?.['minlength']">La descripción debe tener al menos 30 caracteres</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Horarios -->
+      <div class="form-section" [formGroup]="scheduleForm">
+        <h2 class="section-title">Horario del Restaurante</h2>
+        
+        <div class="schedule-list">
+          <div class="schedule-item" *ngFor="let day of weekDays">
+            <div class="day-toggle">
+              <div class="form-check form-switch">
+                <input 
+                  class="form-check-input" 
+                  type="checkbox" 
+                  [id]="day + '_open'" 
+                  [formControlName]="day + '_open'">
+                <label class="form-check-label" [for]="day + '_open'">
+                  {{day}}
+                </label>
+              </div>
+            </div>
+            
+            <div class="hours-selector" *ngIf="scheduleForm.get(day + '_open')?.value">
+              <div class="time-input">
+                <label [for]="day + '_openTime'" class="visually-hidden">Hora de apertura</label>
+                <input 
+                  type="time" 
+                  class="form-control" 
+                  [id]="day + '_openTime'" 
+                  [formControlName]="day + '_openTime'">
+              </div>
+              <span class="time-separator">a</span>
+              <div class="time-input">
+                <label [for]="day + '_closeTime'" class="visually-hidden">Hora de cierre</label>
+                <input 
+                  type="time" 
+                  class="form-control" 
+                  [id]="day + '_closeTime'" 
+                  [formControlName]="day + '_closeTime'">
+              </div>
+            </div>
+            
+            <div class="closed-message" *ngIf="!scheduleForm.get(day + '_open')?.value">
+              Cerrado
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Información de cuenta -->
+      <div class="form-section">
+        <h2 class="section-title">Información de Acceso</h2>
+        
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="contactName">Nombre del administrador*</label>
+              <input 
+                type="text" 
+                id="contactName" 
+                formControlName="contactName" 
+                class="form-control" 
+                [ngClass]="{'is-invalid': contactNameInvalid}"
+                placeholder="Nombre completo">
+              <div class="invalid-feedback" *ngIf="contactNameInvalid">El nombre es obligatorio</div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="contactEmail">Email del administrador*</label>
+              <input 
+                type="email" 
+                id="contactEmail" 
+                formControlName="contactEmail" 
+                class="form-control" 
+                [ngClass]="{'is-invalid': contactEmailInvalid}"
+                placeholder="admin@restaurante.com">
+              <div class="invalid-feedback" *ngIf="contactEmailInvalid">
+                <span *ngIf="registerForm.get('contactEmail')?.errors?.['required']">El email es obligatorio</span>
+                <span *ngIf="registerForm.get('contactEmail')?.errors?.['email']">Ingresa un email válido</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="password">Contraseña*</label>
+              <input 
+                type="password" 
+                id="password" 
+                formControlName="password" 
+                class="form-control" 
+                [ngClass]="{'is-invalid': passwordInvalid}"
+                placeholder="Mínimo 8 caracteres">
+              <div class="invalid-feedback" *ngIf="passwordInvalid">
+                <span *ngIf="registerForm.get('password')?.errors?.['required']">La contraseña es obligatoria</span>
+                <span *ngIf="registerForm.get('password')?.errors?.['minlength']">Mínimo 8 caracteres</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="confirmPassword">Confirmar contraseña*</label>
+              <input 
+                type="password" 
+                id="confirmPassword" 
+                formControlName="confirmPassword" 
+                class="form-control" 
+                [ngClass]="{'is-invalid': confirmPasswordInvalid || passwordMismatch}"
+                placeholder="Repite la contraseña">
+              <div class="invalid-feedback" *ngIf="confirmPasswordInvalid || passwordMismatch">
+                <span *ngIf="registerForm.get('confirmPassword')?.errors?.['required']">Confirma tu contraseña</span>
+                <span *ngIf="passwordMismatch">Las contraseñas no coinciden</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="form-actions">
+        <div class="required-note">* Campos obligatorios</div>
+        <button type="submit" class="btn btn-primary btn-register" [disabled]="formSubmitted && (registerForm.invalid || scheduleForm.invalid)">
+          <i class="bi bi-building-add me-2"></i>
+          Crear Cuenta
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,180 @@
+// Variables de colores para el panel de administrador
+$admin-primary: #3b82f6; // Azul para acciones
+$admin-dark: #1e293b; // Gris oscuro
+$admin-gray: #64748b; // Gris medio
+$admin-light: #f1f5f9; // Gris claro
+$admin-lighter: #f8fafc; // Gris más claro
+$admin-border: #e2e8f0; // Color para bordes
+
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+// Estilos del sidebar
+.sidebar {
+  width: 260px;
+  background-color: $admin-dark;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.sidebar-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.restaurant-name {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: white;
+}
+
+.admin-badge {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.7);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  display: inline-block;
+}
+
+.sidebar-nav {
+  padding: 1.5rem 0;
+  flex-grow: 1;
+}
+
+.nav-item {
+  margin-bottom: 0.25rem;
+}
+
+.nav-link {
+  color: rgba(255, 255, 255, 0.7);
+  padding: 0.75rem 1.5rem;
+  transition: all 0.2s ease;
+  border-left: 3px solid transparent;
+}
+
+.nav-link:hover {
+  color: white;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.nav-link.active {
+  color: white;
+  border-left-color: $admin-primary;
+  background-color: rgba(59, 130, 246, 0.15);
+}
+
+.sidebar-footer {
+  padding: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+// Estilos del área de contenido principal
+.main-content {
+  flex: 1;
+  margin-left: 260px; // El ancho del sidebar
+  background-color: $admin-light;
+  min-height: 100vh;
+}
+
+.admin-header {
+  background-color: white;
+  padding: 1rem 2rem;
+  border-bottom: 1px solid $admin-border;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+}
+
+.current-page-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: $admin-dark;
+  margin: 0;
+}
+
+.admin-user {
+  display: flex;
+  align-items: center;
+}
+
+.admin-name {
+  margin-right: 0.75rem;
+  font-weight: 500;
+  color: $admin-gray;
+}
+
+.admin-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+}
+
+.content-container {
+  padding: 2rem;
+  height: calc(100vh - 72px); // Altura total menos la altura del header
+  overflow-y: auto;
+}
+
+// Estilos para componentes comunes en el panel de administrador
+.card {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  border: 1px solid $admin-border;
+  margin-bottom: 1.5rem;
+}
+
+.card-header {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid $admin-border;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-body {
+  padding: 1.5rem;
+}
+
+// Botones de acción
+.btn-action {
+  background-color: $admin-primary;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.btn-action:hover {
+  background-color: darken($admin-primary, 10%);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+// Botones para editar y cancelar
+.btn-edit {
+  color: $admin-primary;
+  background-color: rgba(59, 130, 246, 0.1);
+}
+
+.btn-edit:hover {
+  background-color: rgba(59, 130, 246, 0.2);
+}
+
+.btn-cancel {
+  color: #ef4444;
+  background-color: rgba(239, 68, 68, 0.1);
+}
+
+.btn-cancel:hover {
+  background-color: rgba(239, 68, 68, 0.2);
+}

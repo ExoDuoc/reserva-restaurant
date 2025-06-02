@@ -1,0 +1,175 @@
+<div class="reservations-container">
+  <!-- Encabezado de sección -->
+  <div class="section-header">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <h2 class="section-title">Gestión de Reservas</h2>
+        <p class="text-muted">Administra todas las reservas del restaurante</p>
+      </div>
+      <div>
+        <button class="btn btn-action">
+          <i class="bi bi-download me-2"></i> Exportar
+        </button>
+      </div>
+    </div>
+    
+    <!-- Filtros -->
+    <div class="filters-bar mb-4">
+      <div class="d-flex gap-2">
+        <button 
+          class="btn" 
+          [class.btn-action]="statusFilter === 'all'"
+          [class.btn-outline-secondary]="statusFilter !== 'all'"
+          (click)="changeStatusFilter('all')"
+        >
+          Todas
+        </button>
+        <button 
+          class="btn" 
+          [class.btn-action]="statusFilter === 'confirmed'"
+          [class.btn-outline-secondary]="statusFilter !== 'confirmed'"
+          (click)="changeStatusFilter('confirmed')"
+        >
+          Confirmadas
+        </button>
+        <button 
+          class="btn" 
+          [class.btn-action]="statusFilter === 'cancelled'"
+          [class.btn-outline-secondary]="statusFilter !== 'cancelled'"
+          (click)="changeStatusFilter('cancelled')"
+        >
+          Canceladas
+        </button>
+        <button 
+          class="btn" 
+          [class.btn-action]="statusFilter === 'completed'"
+          [class.btn-outline-secondary]="statusFilter !== 'completed'"
+          (click)="changeStatusFilter('completed')"
+        >
+          Completadas
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Tabla de Reservas -->
+  <div class="card">
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table reservation-table">
+          <thead>
+            <tr>
+              <th>Cliente</th>
+              <th>Fecha</th>
+              <th>Hora</th>
+              <th>Personas</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let reservation of filteredReservations">
+              <td>
+                <div class="client-info">
+                  <div class="client-name">{{reservation.clientName}}</div>
+                  <div class="client-email">{{reservation.email}}</div>
+                  <div class="client-phone" *ngIf="reservation.phone">{{reservation.phone}}</div>
+                </div>
+              </td>
+              <td>{{formatDate(reservation.date)}}</td>
+              <td>{{reservation.time}}</td>
+              <td>{{reservation.people}}</td>
+              <td>
+                <span class="status-badge" [ngClass]="getStatusClass(reservation.status)">
+                  {{reservation.status === 'confirmed' ? 'Confirmada' : 
+                    reservation.status === 'cancelled' ? 'Cancelada' : 'Completada'}}
+                </span>
+              </td>
+              <td>
+                <div class="d-flex gap-2">
+                  <button 
+                    class="btn btn-sm btn-edit" 
+                    (click)="editReservation(reservation)"
+                    [disabled]="reservation.status === 'cancelled' || reservation.status === 'completed'"
+                  >
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                  <button 
+                    class="btn btn-sm btn-cancel" 
+                    (click)="cancelReservation(reservation)"
+                    [disabled]="reservation.status === 'cancelled' || reservation.status === 'completed'"
+                  >
+                    <i class="bi bi-x-circle"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr *ngIf="filteredReservations.length === 0">
+              <td colspan="6" class="text-center py-4">
+                <div class="empty-state">
+                  <i class="bi bi-calendar-x empty-icon"></i>
+                  <p>No se encontraron reservas con los filtros actuales</p>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de Edición -->
+<div class="modal-overlay" *ngIf="showEditModal">
+  <div class="modal-container">
+    <div class="modal-header">
+      <h3>Editar Reserva</h3>
+      <button class="btn-close" (click)="closeEditModal()"></button>
+    </div>
+    <div class="modal-body" *ngIf="editingReservation">
+      <div class="mb-3">
+        <p class="mb-1"><strong>Cliente:</strong> {{editingReservation.clientName}}</p>
+        <p class="mb-1"><strong>Email:</strong> {{editingReservation.email}}</p>
+        <p *ngIf="editingReservation.phone" class="mb-1"><strong>Teléfono:</strong> {{editingReservation.phone}}</p>
+      </div>
+      
+      <div class="form-group mb-3">
+        <label for="date">Fecha</label>
+        <input 
+          type="date" 
+          id="date" 
+          class="form-control" 
+          [(ngModel)]="editFormData.date"
+          min="{{new Date().toISOString().split('T')[0]}}"
+        >
+      </div>
+      
+      <div class="form-group mb-3">
+        <label for="time">Hora</label>
+        <select id="time" class="form-select" [(ngModel)]="editFormData.time">
+          <option *ngFor="let time of timeOptions" [value]="time">{{time}}</option>
+        </select>
+      </div>
+      
+      <div class="form-group mb-3">
+        <label for="people">Personas</label>
+        <select id="people" class="form-select" [(ngModel)]="editFormData.people">
+          <option *ngFor="let num of [1,2,3,4,5,6,7,8,9,10]" [value]="num">{{num}}</option>
+        </select>
+      </div>
+      
+      <div class="form-group mb-3">
+        <label for="status">Estado</label>
+        <select id="status" class="form-select" [(ngModel)]="editFormData.status">
+          <option value="confirmed">Confirmada</option>
+          <option value="cancelled">Cancelada</option>
+          <option value="completed">Completada</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="closeEditModal()">Cancelar</button>
+      <button class="btn btn-action" (click)="saveReservationChanges()">Guardar Cambios</button>
+    </div>
+  </div>
+</div>
