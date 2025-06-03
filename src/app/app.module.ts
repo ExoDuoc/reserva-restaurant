@@ -1,6 +1,11 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { JwtModule } from '@auth0/angular-jwt';
+
+// Componentes
 import { AppComponent } from './app.component';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
@@ -12,6 +17,18 @@ import { ReservationsComponent } from './admin/reservations/reservations.compone
 import { AvailabilityComponent } from './admin/availability/availability.component';
 import { ProfileComponent } from './admin/profile/profile.component';
 import { RestaurantRegisterComponent } from './restaurant-register/restaurant-register.component';
+
+// Módulos personalizados
+import { CoreModule } from './core/core.module';
+import { SharedModule } from './shared/shared.module';
+
+// Entorno
+import { environment } from '../environments/environment';
+
+// Función para obtener el token JWT
+export function tokenGetter() {
+  return localStorage.getItem('auth_token');
+}
 
 export const routes: Routes = [
   { path: '', component: SearchComponent },
@@ -33,7 +50,7 @@ export const routes: Routes = [
 
 @NgModule({
   declarations: [
-    AppComponent,
+    // AppComponent es ahora standalone, no debe ser declarado aquí
     HomeComponent,
     SearchComponent,
     ReservationComponent,
@@ -43,14 +60,42 @@ export const routes: Routes = [
     AvailabilityComponent
   ],
   imports: [
+    // Módulos de Angular
     BrowserModule,
+    BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
+    HttpClientModule,
+    
+    // JWT Module
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter,
+        allowedDomains: ['localhost:3000', 'api.turestaurante.com'], // Ajustar según tu dominio
+        disallowedRoutes: [
+          `${environment.apiUrl}/auth/login`,
+          `${environment.apiUrl}/auth/register`
+        ]
+      }
+    }),
+    
+    // Módulos de la aplicación
+    CoreModule,
+    SharedModule,
+    
+    // Componentes (standalone)
     ProfileComponent,
     RestaurantRegisterComponent,
-    RouterModule.forRoot(routes)
+    
+    // Rutas
+    RouterModule.forRoot(routes, {
+      scrollPositionRestoration: 'enabled',
+      anchorScrolling: 'enabled'
+    })
   ],
-  providers: [],
+  providers: [
+    // Servicios globales pueden ir aquí si no están en CoreModule
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

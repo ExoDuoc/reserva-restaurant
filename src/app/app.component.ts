@@ -1,8 +1,38 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
+// Módulos de características
+import { NotificationsModule } from './features/notifications/notifications.module';
+
+// Servicios
+import { NotificationService } from './core/services/notification/notification.service';
+
+// Componentes
+import { NotificationContainerComponent } from './shared/components/notification/notification-container.component';
+
+/**
+ * Componente raíz de la aplicación.
+ * Configura el diseño principal y la estructura de la aplicación.
+ */
 @Component({
   selector: 'app-root',
+  standalone: true,
+  imports: [
+    // Módulos de Angular
+    CommonModule,
+    RouterModule,
+    
+    // Módulos de características
+    NotificationsModule,
+    
+    // Componentes standalone
+    NotificationContainerComponent
+  ],
   template: `
+    <!-- Contenedor de notificaciones globales -->
+    <app-notification-container></app-notification-container>
+    
     <div class="app-container">
       <header class="navbar navbar-expand-lg p-3">
         <div class="container">
@@ -11,7 +41,15 @@ import { Component } from '@angular/core';
               <span class="logo-text">SABOR</span>
             </div>
           </a>
-          <div class="ms-auto">
+          <div class="ms-auto d-flex align-items-center">
+            <!-- Botones de prueba para notificaciones -->
+            <div class="notification-test-buttons me-3 d-none d-lg-flex">
+              <button class="btn btn-sm btn-success me-1" (click)="showNotification('success')">Éxito</button>
+              <button class="btn btn-sm btn-info me-1" (click)="showNotification('info')">Info</button>
+              <button class="btn btn-sm btn-warning me-1" (click)="showNotification('warning')">Advertencia</button>
+              <button class="btn btn-sm btn-danger" (click)="showNotification('error')">Error</button>
+            </div>
+            
             <button class="btn btn-outline-secondary me-2" routerLink="/login">Iniciar sesión / Registrarse</button>
           </div>
         </div>
@@ -125,6 +163,41 @@ import { Component } from '@angular/core';
     }
   `]
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'SABOR Restaurant';
+  
+  constructor(private notificationService: NotificationService) {}
+
+  ngOnInit(): void {
+    // Mostrar notificación de bienvenida con un pequeño retraso para mejor experiencia de usuario
+    setTimeout(() => {
+      this.notificationService.success(
+        '¡Bienvenido!',
+        'Sistema de gestión de restaurantes cargado correctamente.'
+      );
+    }, 1000);
+  }
+  
+  /**
+   * Muestra una notificación del tipo especificado para probar el sistema
+   * @param type Tipo de notificación: success, info, warning, error
+   */
+  showNotification(type: 'success' | 'error' | 'info' | 'warning'): void {
+    const titles = {
+      success: '¡Operación exitosa!',
+      error: 'Error',
+      info: 'Información',
+      warning: 'Advertencia'
+    };
+    
+    const messages = {
+      success: 'La operación se ha completado correctamente.',
+      error: 'Ha ocurrido un error al procesar la solicitud.',
+      info: 'El sistema se actualizará en los próximos días.',
+      warning: 'Esta acción podría afectar a datos existentes.'
+    };
+    
+    // Usar el servicio para mostrar la notificación del tipo seleccionado
+    this.notificationService[type](titles[type], messages[type]);
+  }
 }

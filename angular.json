@@ -22,6 +22,8 @@
             "main": "src/main.ts",
             "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
+            "baseHref": "/",
+            "deployUrl": "/",
             "assets": [
               "src/favicon.ico",
               "src/assets"
@@ -45,10 +47,14 @@
                   "maximumError": "4kb"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "baseHref": "/",
+              "deployUrl": "/"
             },
             "development": {
               "buildOptimizer": false,
+              "baseHref": "/",
+              "deployUrl": "/",
               "optimization": false,
               "vendorChunk": true,
               "extractLicenses": false,
