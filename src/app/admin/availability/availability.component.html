@@ -1,113 +1,121 @@
-<div class="availability-container">
-  <!-- Encabezado de sección -->
-  <div class="section-header">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-      <div>
-        <h2 class="section-title">Gestión de Disponibilidad</h2>
-        <p class="text-muted">Configura los horarios disponibles para reservas</p>
-      </div>
-      <div>
-        <button class="btn btn-action" (click)="saveAllChanges()">
-          <i class="bi bi-check2-circle me-2"></i> Guardar Cambios
-        </button>
-      </div>
+<div class="container-fluid">
+  <div class="row mb-4">
+    <div class="col-12">
+      <h2 class="section-title"><i class="bi bi-calendar-check"></i> Gestión de disponibilidad</h2>
+      <p class="text-muted">Configure los días y horarios de apertura de su restaurante para gestionar las reservas de manera eficiente.</p>
     </div>
   </div>
-  
+
   <!-- Alerta de éxito -->
   <div class="alert alert-success alert-dismissible fade show" role="alert" *ngIf="showSuccessAlert">
     <i class="bi bi-check-circle-fill me-2"></i>
     Los cambios han sido guardados correctamente.
     <button type="button" class="btn-close" (click)="showSuccessAlert = false"></button>
   </div>
-  
-  <!-- Configuración General -->
-  <div class="card mb-4">
-    <div class="card-header">
-      <h3 class="card-title">Configuración General</h3>
-    </div>
-    <div class="card-body">
-      <div class="row">
-        <div class="col-md-6">
-          <div class="form-group mb-3">
-            <label for="capacity">Capacidad total del restaurante</label>
-            <input 
-              type="number" 
-              id="capacity" 
-              class="form-control" 
-              [value]="capacity"
-              (change)="updateCapacity($event)"
-              min="1"
-            >
-          </div>
+
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title"><i class="bi bi-gear"></i> Configuración general</h5>
         </div>
-        <div class="col-md-6">
-          <div class="form-group mb-3">
-            <label for="maxReservations">Máximo de reservas por horario</label>
-            <input 
-              type="number" 
-              id="maxReservations" 
-              class="form-control" 
-              [value]="maxReservationsPerSlot"
-              (change)="updateMaxReservations($event)"
-              min="1"
-            >
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Calendario de Disponibilidad Semanal -->
-  <div class="card mb-4" *ngIf="!editingHours">
-    <div class="card-header">
-      <h3 class="card-title">Disponibilidad Semanal</h3>
-    </div>
-    <div class="card-body p-0">
-      <div class="weekly-calendar">
-        <div 
-          class="day-column" 
-          *ngFor="let day of weekdays" 
-          [ngClass]="getDayClass(day)"
-        >
-          <div class="day-header">
-            <h4 class="day-name">{{day.day}}</h4>
-            <div class="day-actions">
-              <button 
-                class="btn btn-sm" 
-                [ngClass]="{'btn-outline-danger': day.isOpen, 'btn-outline-success': !day.isOpen}"
-                (click)="toggleDayOpenStatus(day)"
-              >
-                <i class="bi" [ngClass]="{'bi-x-circle': day.isOpen, 'bi-check-circle': !day.isOpen}"></i>
-                {{day.isOpen ? 'Cerrar' : 'Abrir'}}
-              </button>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group mb-4">
+                <label for="closingDays"><i class="bi bi-x-circle me-2"></i>Días de cierre regular</label>
+                <select id="closingDays" class="form-select" multiple aria-label="Días de cierre" [(ngModel)]="regularClosingDays">
+                  <option value="1">Lunes</option>
+                  <option value="2">Martes</option>
+                  <option value="3">Miércoles</option>
+                  <option value="4">Jueves</option>
+                  <option value="5">Viernes</option>
+                  <option value="6">Sábado</option>
+                  <option value="0">Domingo</option>
+                </select>
+                <small class="form-text text-muted"><i class="bi bi-info-circle me-1"></i>Seleccione los días en los que su restaurante permanece cerrado regularmente.</small>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group mb-4">
+                <label for="maxReservations"><i class="bi bi-people me-2"></i>Máximo de reservas por horario</label>
+                <input 
+                  type="number" 
+                  id="maxReservations" 
+                  class="form-control" 
+                  [value]="maxReservationsPerSlot"
+                  (change)="updateMaxReservations($event)"
+                  min="1"
+                >
+              </div>
             </div>
           </div>
-          
-          <div class="day-status">
-            <span *ngIf="day.isOpen" class="status-tag status-open">
-              <i class="bi bi-clock me-1"></i> 
-              {{getAvailableSlotsCount(day)}} horarios disponibles
-            </span>
-            <span *ngIf="!day.isOpen" class="status-tag status-closed">
-              <i class="bi bi-shop me-1"></i> Cerrado
-            </span>
+          <div class="alert alert-info info-box mb-4">
+            <i class="bi bi-info-circle-fill"></i>
+            <span>Los cambios en esta configuración afectarán a todas las disponibilidades futuras del restaurante.</span>
           </div>
-          
-          <div class="day-content">
-            <button 
-              class="btn btn-sm btn-edit w-100" 
-              (click)="editHours(day)"
-              [disabled]="!day.isOpen"
-            >
-              <i class="bi bi-pencil me-1"></i> Editar Horarios
+          <div class="d-flex justify-content-end">
+            <button class="btn btn-primary" (click)="saveGeneralSettings()">
+              <i class="bi bi-save"></i> Guardar configuración
             </button>
           </div>
         </div>
       </div>
     </div>
   </div>
-  
+
+  <!-- Calendario de Disponibilidad Semanal -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title"><i class="bi bi-calendar-week"></i> Disponibilidad semanal</h5>
+        </div>
+        <div class="card-body p-0">
+          <div class="weekly-calendar">
+            <div 
+              class="day-column" 
+              *ngFor="let day of weekdays" 
+              [ngClass]="getDayClass(day)"
+            >
+              <div class="day-header">
+                <h4 class="day-name">{{day.day}}</h4>
+                <div class="day-actions">
+                  <button 
+                    class="btn btn-sm" 
+                    [ngClass]="{'btn-outline-danger': day.isOpen, 'btn-outline-success': !day.isOpen}"
+                    (click)="toggleDayOpenStatus(day)"
+                  >
+                    <i class="bi" [ngClass]="{'bi-x-circle': day.isOpen, 'bi-check-circle': !day.isOpen}"></i>
+                    {{day.isOpen ? 'Cerrar' : 'Abrir'}}
+                  </button>
+                </div>
+              </div>
+              <div class="day-status">
+                <span *ngIf="day.isOpen" class="status-tag status-open">
+                  <i class="bi bi-clock me-1"></i> 
+                  {{getAvailableSlotsCount(day)}} horarios disponibles
+                </span>
+                <span *ngIf="!day.isOpen" class="status-tag status-closed">
+                  <i class="bi bi-shop me-1"></i> Cerrado
+                </span>
+              </div>
+              <div class="day-content">
+                <button 
+                  class="btn btn-sm btn-edit w-100" 
+                  (click)="editHours(day)"
+                  [disabled]="!day.isOpen"
+                >
+                  <i class="bi bi-pencil me-1"></i> Editar Horarios
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Editor de Horarios -->
   <div class="card mb-4" *ngIf="editingHours && selectedDay">
     <div class="card-header d-flex justify-content-between align-items-center">
@@ -122,9 +130,13 @@
       </div>
     </div>
     <div class="card-body">
-      <div class="timeslot-editor">
-        <div class="time-group">
-          <h4 class="time-section-title">Horario de Almuerzo</h4>
+      <div class="alert alert-success mb-4" *ngIf="showSuccessMessage">
+        <i class="bi bi-check-circle-fill"></i>
+        <span>Los horarios se han guardado correctamente.</span>
+      </div>
+      <div class="timeslot-editor" *ngIf="dayConfiguration.isOpen">
+        <div class="lunch-section">
+          <h6 class="time-section-title">Horarios de almuerzo</h6>
           <div class="time-slots">
             <div 
               *ngFor="let slot of selectedDay.slots" 
@@ -137,9 +149,12 @@
             </div>
           </div>
         </div>
-        
-        <div class="time-group">
-          <h4 class="time-section-title">Horario de Cena</h4>
+        <div class="dinner-section">
+          <h6 class="time-section-title">Horarios de cena</h6>
+          <div class="info-box mb-3">
+            <i class="bi bi-info-circle"></i>
+            <span>Seleccione los horarios disponibles para reservas de cena.</span>
+          </div>
           <div class="time-slots">
             <div 
               *ngFor="let slot of selectedDay.slots" 
