@@ -22,6 +22,7 @@ export class ReservationsComponent implements OnInit {
   statusFilter: string = 'all';
   editingReservation: Reservation | null = null;
   showEditModal: boolean = false;
+  minDate: string = '';
   
   // Datos temporales para la edición de reserva
   editFormData: {
@@ -46,6 +47,9 @@ export class ReservationsComponent implements OnInit {
     // Simular carga de datos desde un servicio
     this.loadReservations();
     this.applyFilters();
+    
+    // Configurar la fecha mínima para las reservas
+    this.minDate = new Date().toISOString().split('T')[0];
   }
   
   loadReservations(): void {

@@ -138,15 +138,16 @@
         <div class="lunch-section">
           <h6 class="time-section-title">Horarios de almuerzo</h6>
           <div class="time-slots">
-            <div 
-              *ngFor="let slot of selectedDay.slots" 
-              class="time-slot" 
-              [ngClass]="getTimeSlotClass(slot)"
-              (click)="toggleTimeSlot(slot)"
-              *ngIf="slot.time >= '12:00' && slot.time <= '15:00'"
-            >
-              {{slot.time}}
-            </div>
+            <ng-container *ngFor="let slot of selectedDay.slots">
+              <div 
+                *ngIf="slot.time >= '12:00' && slot.time <= '15:00'"
+                class="time-slot" 
+                [ngClass]="getTimeSlotClass(slot)"
+                (click)="toggleTimeSlot(slot)"
+              >
+                {{slot.time}}
+              </div>
+            </ng-container>
           </div>
         </div>
         <div class="dinner-section">
@@ -156,15 +157,16 @@
             <span>Seleccione los horarios disponibles para reservas de cena.</span>
           </div>
           <div class="time-slots">
-            <div 
-              *ngFor="let slot of selectedDay.slots" 
-              class="time-slot" 
-              [ngClass]="getTimeSlotClass(slot)"
-              (click)="toggleTimeSlot(slot)"
-              *ngIf="slot.time >= '19:00' && slot.time <= '23:00'"
-            >
-              {{slot.time}}
-            </div>
+            <ng-container *ngFor="let slot of selectedDay.slots">
+              <div 
+                *ngIf="slot.time >= '19:00' && slot.time <= '23:00'"
+                class="time-slot" 
+                [ngClass]="getTimeSlotClass(slot)"
+                (click)="toggleTimeSlot(slot)"
+              >
+                {{slot.time}}
+              </div>
+            </ng-container>
           </div>
         </div>
       </div>

@@ -1,25 +1,91 @@
-.section-title {
-  color: #1e293b;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
+// Variables
+$primary-color: #28a745;
+$primary-light: rgba($primary-color, 0.1);
+$text-dark: #212529;
+$text-muted: #6c757d;
+$border-light: #e9ecef;
+$card-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+$danger-color: #dc3545;
+$info-color: #0d6efd;
+
+// Mixins
+@mixin transition($property: all, $duration: 0.2s) {
+  transition: $property $duration ease;
 }
 
+@mixin hover-lighten {
+  @include transition;
+  &:hover {
+    filter: brightness(1.1);
+  }
+}
+
+.section-title {
+  color: $text-dark;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  font-size: 1.75rem;
+}
+
+.filters-bar {
+  .btn {
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    @include transition;
+    
+    &.btn-action {
+      background-color: $primary-color;
+      color: white;
+      border-color: $primary-color;
+      
+      &:hover {
+        background-color: darken($primary-color, 5%);
+        border-color: darken($primary-color, 5%);
+      }
+    }
+    
+    &.btn-outline-secondary {
+      color: $text-dark;
+      border-color: $border-light;
+      
+      &:hover {
+        background-color: $border-light;
+        color: $text-dark;
+      }
+    }
+  }
+}
+
+// Table styles
 .reservation-table {
   margin-bottom: 0;
+  
+  thead {
+    background-color: #f8f9fa;
+  }
 }
 
 .reservation-table th {
   padding: 1rem 1.5rem;
   font-weight: 600;
-  color: #64748b;
-  border-bottom: 1px solid #e2e8f0;
-  background-color: #f8fafc;
+  color: $text-dark;
+  border-bottom: 1px solid $border-light;
+  font-size: 0.95rem;
 }
 
 .reservation-table td {
   padding: 1rem 1.5rem;
   vertical-align: middle;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid $border-light;
+}
+
+.reservation-table tbody tr {
+  @include transition(background-color);
+  
+  &:hover {
+    background-color: rgba($primary-color, 0.03);
+  }
 }
 
 .client-info {
@@ -28,55 +94,114 @@
 }
 
 .client-name {
-  font-weight: 500;
-  color: #1e293b;
+  font-weight: 600;
+  color: $text-dark;
+  margin-bottom: 0.25rem;
 }
 
 .client-email, .client-phone {
   font-size: 0.85rem;
-  color: #64748b;
+  color: $text-muted;
+  
+  i {
+    color: $primary-color;
+    margin-right: 0.25rem;
+  }
 }
 
 .status-badge {
   display: inline-block;
-  padding: 0.25rem 0.75rem;
-  border-radius: 2rem;
-  font-size: 0.85rem;
-  font-weight: 500;
+  padding: 0.35rem 0.75rem;
+  border-radius: 50rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .status-confirmed {
-  background-color: rgba(16, 185, 129, 0.1);
-  color: #10b981;
+  background-color: rgba($primary-color, 0.1);
+  color: $primary-color;
 }
 
 .status-cancelled {
-  background-color: rgba(239, 68, 68, 0.1);
-  color: #ef4444;
+  background-color: rgba($danger-color, 0.1);
+  color: $danger-color;
 }
 
 .status-completed {
-  background-color: rgba(59, 130, 246, 0.1);
-  color: #3b82f6;
+  background-color: rgba($info-color, 0.1);
+  color: $info-color;
+}
+
+// Buttons
+.btn-action {
+  background-color: $primary-color;
+  color: white;
+  border-color: $primary-color;
+  @include transition;
+  
+  &:hover, &:active {
+    background-color: darken($primary-color, 5%);
+    border-color: darken($primary-color, 5%);
+  }
+  
+  &:focus {
+    box-shadow: 0 0 0 0.25rem rgba($primary-color, 0.25);
+  }
 }
 
 .btn-sm {
   padding: 0.375rem 0.5rem;
   font-size: 0.85rem;
+  border-radius: 0.25rem;
+}
+
+.btn-edit {
+  background-color: $primary-light;
+  color: $primary-color;
+  border-color: transparent;
+  @include hover-lighten;
+  
+  &:hover {
+    background-color: rgba($primary-color, 0.2);
+  }
+  
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.btn-cancel {
+  background-color: rgba($danger-color, 0.1);
+  color: $danger-color;
+  border-color: transparent;
+  @include hover-lighten;
+  
+  &:hover {
+    background-color: rgba($danger-color, 0.2);
+  }
+  
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
 }
 
 .empty-state {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 2rem 0;
-  color: #64748b;
+  padding: 2.5rem 0;
+  color: $text-muted;
 }
 
 .empty-icon {
   font-size: 2.5rem;
   margin-bottom: 1rem;
   opacity: 0.5;
+  color: $text-muted;
 }
 
 // Estilos para el modal
@@ -91,43 +216,115 @@
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .modal-container {
   background-color: white;
-  border-radius: 8px;
+  border-radius: 0.5rem;
   width: 100%;
-  max-width: 500px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  max-width: 550px;
+  box-shadow: $card-shadow;
+  animation: slideUp 0.3s ease;
+  overflow: hidden;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }
 
 .modal-header {
   padding: 1.25rem 1.5rem;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid $border-light;
   display: flex;
   align-items: center;
   justify-content: space-between;
-}
-
-.modal-header h3 {
-  margin: 0;
-  font-weight: 600;
-  color: #1e293b;
+  background-color: #f8f9fa;
+  
+  h3 {
+    margin: 0;
+    font-weight: 600;
+    color: $text-dark;
+    font-size: 1.25rem;
+  }
+  
+  .btn-close {
+    background-color: transparent;
+    border: none;
+    color: $text-muted;
+    padding: 0.5rem;
+    cursor: pointer;
+    @include transition;
+    
+    &:hover {
+      color: $text-dark;
+    }
+  }
 }
 
 .modal-body {
   padding: 1.5rem;
+  
+  .form-group {
+    margin-bottom: 1.5rem;
+    
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: $text-dark;
+    }
+    
+    .form-control, .form-select {
+      border: 1px solid $border-light;
+      border-radius: 0.375rem;
+      padding: 0.5rem 0.75rem;
+      width: 100%;
+      font-size: 0.95rem;
+      @include transition;
+      
+      &:focus {
+        border-color: rgba($primary-color, 0.5);
+        box-shadow: 0 0 0 0.25rem rgba($primary-color, 0.25);
+        outline: 0;
+      }
+    }
+  }
 }
 
 .modal-footer {
   padding: 1.25rem 1.5rem;
-  border-top: 1px solid #e2e8f0;
+  border-top: 1px solid $border-light;
   display: flex;
   justify-content: flex-end;
   gap: 0.75rem;
+  
+  .btn-secondary {
+    background-color: #f8f9fa;
+    border-color: $border-light;
+    color: $text-dark;
+    @include transition;
+    
+    &:hover {
+      background-color: darken(#f8f9fa, 5%);
+    }
+  }
 }
 
 // Responsive para móviles
+@media (max-width: 992px) {
+  .reservation-table th,
+  .reservation-table td {
+    padding: 0.75rem 1rem;
+  }
+}
+
 @media (max-width: 767px) {
   .filters-bar .d-flex {
     flex-wrap: wrap;
@@ -136,5 +333,37 @@
   .filters-bar .btn {
     flex: 1 0 calc(50% - 0.5rem);
     margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    padding: 0.5rem;
+  }
+  
+  .modal-container {
+    max-width: 95%;
+    margin: 0 1rem;
+  }
+  
+  .section-title {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .reservation-table {
+    font-size: 0.9rem;
+  }
+  
+  .reservation-table th,
+  .reservation-table td {
+    padding: 0.5rem 0.75rem;
+  }
+  
+  .btn-sm {
+    padding: 0.25rem 0.4rem;
+    font-size: 0.75rem;
+  }
+  
+  .status-badge {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.7rem;
   }
 }

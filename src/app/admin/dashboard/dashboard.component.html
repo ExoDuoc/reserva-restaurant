@@ -7,7 +7,7 @@
         <p class="text-muted">Información general de {{restaurantName}}</p>
       </div>
       <div class="current-date">
-        <i class="bi bi-calendar3 me-2"></i> {{currentMonth}}
+        <i class="bi bi-calendar3"></i> {{currentMonth}}
       </div>
     </div>
   </div>
@@ -16,7 +16,7 @@
   <div class="row mb-4">
     <div class="col-md-3 col-sm-6 mb-3" *ngFor="let stat of stats">
       <div class="card stat-card h-100">
-        <div class="card-body">
+        <div class="card-body p-3">
           <div class="d-flex justify-content-between align-items-center mb-3">
             <h5 class="stat-title">{{stat.title}}</h5>
             <div class="stat-icon" [ngClass]="'bg-' + stat.color + '-light'">
@@ -42,10 +42,11 @@
     <!-- Gráfico de barras semanal -->
     <div class="col-lg-8 mb-4 mb-lg-0">
       <div class="card h-100">
-        <div class="card-header">
+        <div class="card-header d-flex justify-content-between align-items-center">
           <h3 class="card-title">Reservas semanales</h3>
+          <span class="badge bg-success">Esta semana</span>
         </div>
-        <div class="card-body">
+        <div class="card-body p-3">
           <div class="chart-container">
             <div class="chart-bars">
               <div class="chart-bar-wrapper" *ngFor="let stat of weeklyStats">
@@ -64,7 +65,9 @@
       <div class="card h-100">
         <div class="card-header d-flex justify-content-between align-items-center">
           <h3 class="card-title">Reservas recientes</h3>
-          <a href="/admin/reservas" class="text-primary">Ver todas</a>
+          <a href="/admin/reservas" class="text-success">
+            <i class="bi bi-arrow-right-circle me-1"></i> Ver todas
+          </a>
         </div>
         <div class="card-body p-0">
           <ul class="recent-reservations-list">
@@ -97,10 +100,11 @@
     <!-- Tips y Recomendaciones -->
     <div class="col-md-6 mb-4">
       <div class="card h-100">
-        <div class="card-header">
+        <div class="card-header d-flex justify-content-between align-items-center">
           <h3 class="card-title">Tips y Recomendaciones</h3>
+          <i class="bi bi-info-circle text-success"></i>
         </div>
-        <div class="card-body">
+        <div class="card-body p-3">
           <ul class="tips-list">
             <li class="tip-item">
               <i class="bi bi-lightbulb text-warning"></i>
@@ -122,10 +126,11 @@
     <!-- Acciones rápidas -->
     <div class="col-md-6 mb-4">
       <div class="card h-100">
-        <div class="card-header">
+        <div class="card-header d-flex justify-content-between align-items-center">
           <h3 class="card-title">Acciones rápidas</h3>
+          <i class="bi bi-lightning-charge text-success"></i>
         </div>
-        <div class="card-body">
+        <div class="card-body p-3">
           <div class="quick-actions">
             <a href="/admin/reservas" class="quick-action-card">
               <i class="bi bi-calendar-plus"></i>

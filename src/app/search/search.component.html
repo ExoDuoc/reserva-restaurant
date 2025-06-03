@@ -1,45 +1,92 @@
-<div class="search-container">
-  <div class="hero-section">
+<div class="search-page">
+  <header class="search-header">
     <div class="container">
-      <h1 class="hero-title">Encuentra tu restaurante ideal</h1>
-      <p class="hero-subtitle">Busca entre cientos de restaurantes y haz tu reserva en segundos</p>
-      
+      <div class="search-brand">
+        <i class="bi bi-search"></i> Restaurant
+      </div>
+      <div class="user-actions">
+        <a href="#" class="sign-in">Senginar</a>
+        <a href="#" class="sign-up">Cuenta</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="container main-content">
+    <h1 class="search-title">Buscuer esterantas</h1>
+
+    <div class="search-filters">
       <div class="search-box">
-        <div class="input-group">
-          <input type="text" class="form-control" placeholder="Buscar por nombre, ubicación o tipo de cocina...">
-          <button class="btn btn-primary">
-            <i class="bi bi-search me-2"></i>Buscar
+        <i class="bi bi-search"></i>
+        <input type="text" class="form-control" placeholder="Tipo de comida">
+      </div>
+
+      <div class="filter-options">
+        <div class="filter-dropdown">
+          <button class="filter-btn">
+            Tipo de comida
+            <i class="bi bi-chevron-down"></i>
+          </button>
+        </div>
+
+        <div class="filter-dropdown">
+          <button class="filter-btn">
+            Capacidad
+            <i class="bi bi-chevron-down"></i>
+          </button>
+        </div>
+
+        <div class="filter-dropdown">
+          <button class="filter-btn">
+            Disponibilidad
+            <i class="bi bi-chevron-down"></i>
           </button>
         </div>
       </div>
     </div>
-  </div>
-  
-  <div class="container py-5">
-    <div class="row">
-      <div class="col-md-8">
-        <h2 class="section-title">Restaurantes destacados</h2>
-        <!-- Aquí iría el listado de restaurantes -->
-        <div class="alert alert-info">
-          <i class="bi bi-info-circle me-2"></i>
-          Estamos trabajando en cargar los restaurantes disponibles.
+
+    <!-- Resultados de la búsqueda -->
+    <div class="search-results">
+      <div class="row">
+        <div class="col-md-4" *ngFor="let restaurant of filteredRestaurants">
+          <div class="restaurant-card">
+            <div class="restaurant-image" [style.background-image]="'url(' + restaurant.image + ')'"></div>
+            <div class="restaurant-info">
+              <h3>{{restaurant.name}}</h3>
+              <p class="restaurant-subtitle">Director del restaurante</p>
+            </div>
+          </div>
         </div>
-      </div>
-      
-      <div class="col-md-4">
-        <div class="restaurant-register-card">
-          <h3>¿Tienes un restaurante?</h3>
-          <p>Únete a nuestra plataforma y comienza a recibir reservas online.</p>
-          <ul class="benefits-list">
-            <li><i class="bi bi-check-circle-fill"></i> Sistema de gestión de reservas</li>
-            <li><i class="bi bi-check-circle-fill"></i> Control de disponibilidad</li>
-            <li><i class="bi bi-check-circle-fill"></i> Mayor visibilidad</li>
-            <li><i class="bi bi-check-circle-fill"></i> Estadísticas detalladas</li>
-          </ul>
-          <a routerLink="/registro" class="btn btn-outline-primary btn-block">
-            <i class="bi bi-building-add me-2"></i>Registrar mi restaurante
-          </a>
-        </div>
+
+        <!-- Si no hay resultados filtrados, mostrar ejemplos fijos como en la imagen -->
+        <ng-container *ngIf="filteredRestaurants.length === 0">
+          <div class="col-md-4">
+            <div class="restaurant-card">
+              <div class="restaurant-image" style="background-image: url('assets/images/restaurante1.jpg');"></div>
+              <div class="restaurant-info">
+                <h3>Restaurante 1</h3>
+                <p class="restaurant-subtitle">Director del restaurante</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="restaurant-card">
+              <div class="restaurant-image" style="background-image: url('assets/images/restaurante2.jpg');"></div>
+              <div class="restaurant-info">
+                <h3>Restaurante 2</h3>
+                <p class="restaurant-subtitle">Director del restaurante</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="restaurant-card">
+              <div class="restaurant-image" style="background-image: url('assets/images/restaurante3.jpg');"></div>
+              <div class="restaurant-info">
+                <h3>Restaurante 3</h3>
+                <p class="restaurant-subtitle">Director del restaurante</p>
+              </div>
+            </div>
+          </div>
+        </ng-container>
       </div>
     </div>
   </div>

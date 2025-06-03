@@ -40,14 +40,14 @@ export const routes: Routes = [
     AdminLayoutComponent,
     DashboardComponent,
     ReservationsComponent,
-    AvailabilityComponent,
-    ProfileComponent,
-    RestaurantRegisterComponent
+    AvailabilityComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
+    ProfileComponent,
+    RestaurantRegisterComponent,
     RouterModule.forRoot(routes)
   ],
   providers: [],

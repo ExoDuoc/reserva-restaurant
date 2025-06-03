@@ -28,11 +28,28 @@ export class AvailabilityComponent implements OnInit {
   maxReservationsPerSlot: number = 8;
   currentMonth: string = 'Junio 2025';
   showSuccessAlert: boolean = false;
+  showSuccessMessage: boolean = false;
   selectedDay: DayAvailability | null = null;
   editingHours: boolean = false;
+  dayConfiguration: { isOpen: boolean } = { isOpen: true };
+  regularClosingDays: string[] = ['domingo'];
 
   ngOnInit(): void {
     this.initializeWeekdays();
+    // Inicializar el día seleccionado
+    if (this.weekdays.length > 0) {
+      this.selectedDay = this.weekdays[0];
+    }
+  }
+
+  // Método para guardar la configuración general
+  saveGeneralSettings(): void {
+    // Implementación de guardar configuración
+    this.showSuccessMessage = true;
+    // Ocultar el mensaje después de 3 segundos
+    setTimeout(() => {
+      this.showSuccessMessage = false;
+    }, 3000);
   }
 
   initializeWeekdays(): void {

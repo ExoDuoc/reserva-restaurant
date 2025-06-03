@@ -1,20 +1,22 @@
 <div class="reservations-container">
   <!-- Encabezado de sección -->
   <div class="section-header">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-      <div>
-        <h2 class="section-title">Gestión de Reservas</h2>
-        <p class="text-muted">Administra todas las reservas del restaurante</p>
+    <div class="d-flex justify-content-between align-items-start align-items-md-center mb-4 flex-column flex-md-row">
+      <div class="mb-3 mb-md-0">
+        <h2 class="section-title">
+          <i class="bi bi-calendar2-check me-2 text-success"></i>Gestión de Reservas
+        </h2>
+        <p class="text-muted">Administra todas las reservas del restaurante y su estado</p>
       </div>
       <div>
-        <button class="btn btn-action">
-          <i class="bi bi-download me-2"></i> Exportar
+        <button class="btn btn-action shadow-sm">
+          <i class="bi bi-file-earmark-excel me-2"></i> Exportar reservas
         </button>
       </div>
     </div>
     
     <!-- Filtros -->
-    <div class="filters-bar mb-4">
+    <div class="filters-bar mb-4 bg-light p-3 rounded shadow-sm">
       <div class="d-flex gap-2">
         <button 
           class="btn" 
@@ -22,7 +24,7 @@
           [class.btn-outline-secondary]="statusFilter !== 'all'"
           (click)="changeStatusFilter('all')"
         >
-          Todas
+          <i class="bi bi-grid-3x3 me-1"></i> Todas
         </button>
         <button 
           class="btn" 
@@ -30,7 +32,7 @@
           [class.btn-outline-secondary]="statusFilter !== 'confirmed'"
           (click)="changeStatusFilter('confirmed')"
         >
-          Confirmadas
+          <i class="bi bi-check-circle me-1"></i> Confirmadas
         </button>
         <button 
           class="btn" 
@@ -38,7 +40,7 @@
           [class.btn-outline-secondary]="statusFilter !== 'cancelled'"
           (click)="changeStatusFilter('cancelled')"
         >
-          Canceladas
+          <i class="bi bi-x-circle me-1"></i> Canceladas
         </button>
         <button 
           class="btn" 
@@ -46,25 +48,25 @@
           [class.btn-outline-secondary]="statusFilter !== 'completed'"
           (click)="changeStatusFilter('completed')"
         >
-          Completadas
+          <i class="bi bi-trophy me-1"></i> Completadas
         </button>
       </div>
     </div>
   </div>
   
   <!-- Tabla de Reservas -->
-  <div class="card">
+  <div class="card shadow-sm">
     <div class="card-body p-0">
       <div class="table-responsive">
         <table class="table reservation-table">
           <thead>
             <tr>
-              <th>Cliente</th>
-              <th>Fecha</th>
-              <th>Hora</th>
-              <th>Personas</th>
-              <th>Estado</th>
-              <th>Acciones</th>
+              <th><i class="bi bi-person me-2"></i>Cliente</th>
+              <th><i class="bi bi-calendar3 me-2"></i>Fecha</th>
+              <th><i class="bi bi-clock me-2"></i>Hora</th>
+              <th><i class="bi bi-people me-2"></i>Personas</th>
+              <th><i class="bi bi-flag me-2"></i>Estado</th>
+              <th><i class="bi bi-gear me-2"></i>Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -72,15 +74,20 @@
               <td>
                 <div class="client-info">
                   <div class="client-name">{{reservation.clientName}}</div>
-                  <div class="client-email">{{reservation.email}}</div>
-                  <div class="client-phone" *ngIf="reservation.phone">{{reservation.phone}}</div>
+                  <div class="client-email"><i class="bi bi-envelope"></i>{{reservation.email}}</div>
+                  <div class="client-phone" *ngIf="reservation.phone"><i class="bi bi-telephone"></i>{{reservation.phone}}</div>
                 </div>
               </td>
               <td>{{formatDate(reservation.date)}}</td>
-              <td>{{reservation.time}}</td>
-              <td>{{reservation.people}}</td>
+              <td><span class="fw-medium">{{reservation.time}}</span></td>
+              <td><span class="badge bg-light text-dark border">{{reservation.people}} personas</span></td>
               <td>
                 <span class="status-badge" [ngClass]="getStatusClass(reservation.status)">
+                  <i class="bi" [ngClass]="{
+                    'bi-check-circle-fill': reservation.status === 'confirmed',
+                    'bi-x-circle-fill': reservation.status === 'cancelled',
+                    'bi-check-all': reservation.status === 'completed'
+                  }"></i>
                   {{reservation.status === 'confirmed' ? 'Confirmada' : 
                     reservation.status === 'cancelled' ? 'Cancelada' : 'Completada'}}
                 </span>
@@ -91,6 +98,7 @@
                     class="btn btn-sm btn-edit" 
                     (click)="editReservation(reservation)"
                     [disabled]="reservation.status === 'cancelled' || reservation.status === 'completed'"
+                    title="Editar reserva"
                   >
                     <i class="bi bi-pencil"></i>
                   </button>
@@ -98,6 +106,7 @@
                     class="btn btn-sm btn-cancel" 
                     (click)="cancelReservation(reservation)"
                     [disabled]="reservation.status === 'cancelled' || reservation.status === 'completed'"
+                    title="Cancelar reserva"
                   >
                     <i class="bi bi-x-circle"></i>
                   </button>
@@ -105,10 +114,11 @@
               </td>
             </tr>
             <tr *ngIf="filteredReservations.length === 0">
-              <td colspan="6" class="text-center py-4">
+              <td colspan="6" class="text-center py-5">
                 <div class="empty-state">
                   <i class="bi bi-calendar-x empty-icon"></i>
-                  <p>No se encontraron reservas con los filtros actuales</p>
+                  <p class="mb-0 fw-medium">No se encontraron reservas con los filtros actuales</p>
+                  <p class="text-muted">Intenta seleccionar un filtro diferente</p>
                 </div>
               </td>
             </tr>
@@ -123,53 +133,94 @@
 <div class="modal-overlay" *ngIf="showEditModal">
   <div class="modal-container">
     <div class="modal-header">
-      <h3>Editar Reserva</h3>
-      <button class="btn-close" (click)="closeEditModal()"></button>
+      <h3><i class="bi bi-calendar-event me-2 text-success"></i>Editar Reserva</h3>
+      <button class="btn-close" (click)="closeEditModal()">
+        <i class="bi bi-x-lg"></i>
+      </button>
     </div>
     <div class="modal-body" *ngIf="editingReservation">
-      <div class="mb-3">
-        <p class="mb-1"><strong>Cliente:</strong> {{editingReservation.clientName}}</p>
-        <p class="mb-1"><strong>Email:</strong> {{editingReservation.email}}</p>
-        <p *ngIf="editingReservation.phone" class="mb-1"><strong>Teléfono:</strong> {{editingReservation.phone}}</p>
+      <div class="client-summary p-3 mb-4 bg-light rounded">
+        <h5 class="mb-3 border-bottom pb-2">Información del cliente</h5>
+        <div class="d-flex align-items-center mb-2">
+          <i class="bi bi-person-circle fs-5 me-2 text-success"></i>
+          <span class="fw-medium">{{editingReservation.clientName}}</span>
+        </div>
+        <div class="d-flex align-items-center mb-2">
+          <i class="bi bi-envelope fs-5 me-2 text-success"></i>
+          <span>{{editingReservation.email}}</span>
+        </div>
+        <div class="d-flex align-items-center" *ngIf="editingReservation.phone">
+          <i class="bi bi-telephone fs-5 me-2 text-success"></i>
+          <span>{{editingReservation.phone}}</span>
+        </div>
       </div>
+      
+      <h5 class="mb-3 border-bottom pb-2">Detalles de la reserva</h5>
       
       <div class="form-group mb-3">
         <label for="date">Fecha</label>
-        <input 
-          type="date" 
-          id="date" 
-          class="form-control" 
-          [(ngModel)]="editFormData.date"
-          min="{{new Date().toISOString().split('T')[0]}}"
-        >
+        <div class="input-group">
+          <span class="input-group-text bg-light">
+            <i class="bi bi-calendar3"></i>
+          </span>
+          <input 
+            type="date" 
+            id="date" 
+            class="form-control" 
+            [(ngModel)]="editFormData.date"
+            min="{{minDate}}"
+          >
+        </div>
       </div>
       
       <div class="form-group mb-3">
         <label for="time">Hora</label>
-        <select id="time" class="form-select" [(ngModel)]="editFormData.time">
-          <option *ngFor="let time of timeOptions" [value]="time">{{time}}</option>
-        </select>
+        <div class="input-group">
+          <span class="input-group-text bg-light">
+            <i class="bi bi-clock"></i>
+          </span>
+          <select id="time" class="form-select" [(ngModel)]="editFormData.time">
+            <option *ngFor="let time of timeOptions" [value]="time">{{time}}</option>
+          </select>
+        </div>
       </div>
       
       <div class="form-group mb-3">
         <label for="people">Personas</label>
-        <select id="people" class="form-select" [(ngModel)]="editFormData.people">
-          <option *ngFor="let num of [1,2,3,4,5,6,7,8,9,10]" [value]="num">{{num}}</option>
-        </select>
+        <div class="input-group">
+          <span class="input-group-text bg-light">
+            <i class="bi bi-people"></i>
+          </span>
+          <select id="people" class="form-select" [(ngModel)]="editFormData.people">
+            <option *ngFor="let num of [1,2,3,4,5,6,7,8,9,10]" [value]="num">{{num}} personas</option>
+          </select>
+        </div>
       </div>
       
       <div class="form-group mb-3">
         <label for="status">Estado</label>
-        <select id="status" class="form-select" [(ngModel)]="editFormData.status">
-          <option value="confirmed">Confirmada</option>
-          <option value="cancelled">Cancelada</option>
-          <option value="completed">Completada</option>
-        </select>
+        <div class="input-group">
+          <span class="input-group-text bg-light">
+            <i class="bi bi-flag"></i>
+          </span>
+          <select id="status" class="form-select" [(ngModel)]="editFormData.status">
+            <option value="confirmed">Confirmada</option>
+            <option value="cancelled">Cancelada</option>
+            <option value="completed">Completada</option>
+          </select>
+        </div>
+        <small class="text-muted mt-1 d-block">
+          <i class="bi bi-info-circle me-1"></i> Cambiar el estado afectará las notificaciones enviadas al cliente
+        </small>
       </div>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-secondary" (click)="closeEditModal()">Cancelar</button>
-      <button class="btn btn-action" (click)="saveReservationChanges()">Guardar Cambios</button>
+      <button class="btn btn-secondary" (click)="closeEditModal()">
+        <i class="bi bi-x me-1"></i> Cancelar
+      </button>
+      <button class="btn btn-action" (click)="saveReservationChanges()">
+        <i class="bi bi-check2 me-1"></i> Guardar Cambios
+      </button>
     </div>
   </div>
 </div>
