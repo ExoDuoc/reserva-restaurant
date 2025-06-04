@@ -1,15 +1,5 @@
 <div class="search-page">
-  <header class="search-header">
-    <div class="container">
-      <div class="search-brand">
-        <i class="bi bi-search"></i> Restaurant
-      </div>
-      <div class="user-actions">
-        <a href="#" class="sign-in">Iniciar sesión</a>
-        <a href="#" class="sign-up">Cuenta</a>
-      </div>
-    </div>
-  </header>
+  <!-- Header eliminado según solicitud -->
 
   <div class="container main-content">
     <h1 class="search-title">Buscar restaurantes</h1>
@@ -17,30 +7,48 @@
     <div class="search-filters">
       <div class="search-box">
         <i class="bi bi-search"></i>
-        <input type="text" class="form-control" placeholder="Tipo de comida">
+        <input type="text" class="form-control" placeholder="Nombre del restaurante" [(ngModel)]="searchTerm" (input)="applyFilters()">
       </div>
 
       <div class="filter-options">
         <div class="filter-dropdown">
-          <button class="filter-btn">
-            Tipo de comida
-            <i class="bi bi-chevron-down"></i>
-          </button>
+          <select class="form-select" [(ngModel)]="selectedCuisine" (change)="applyFilters()">
+            <option value="">Tipo de comida</option>
+            <option *ngFor="let type of cuisineTypes" [value]="type">{{type}}</option>
+          </select>
         </div>
 
         <div class="filter-dropdown">
-          <button class="filter-btn">
-            Capacidad
-            <i class="bi bi-chevron-down"></i>
-          </button>
+          <select class="form-select" [(ngModel)]="selectedCity" (change)="applyFilters()">
+            <option value="">Todas las ciudades</option>
+            <option *ngFor="let city of cities" [value]="city">{{city}}</option>
+          </select>
         </div>
 
         <div class="filter-dropdown">
-          <button class="filter-btn">
-            Disponibilidad
-            <i class="bi bi-chevron-down"></i>
-          </button>
+          <select class="form-select" [(ngModel)]="minCapacity" (change)="applyFilters()">
+            <option [ngValue]="0">Cualquier capacidad</option>
+            <option [ngValue]="10">Hasta 10 personas</option>
+            <option [ngValue]="20">Hasta 20 personas</option>
+            <option [ngValue]="30">Hasta 30 personas</option>
+            <option [ngValue]="50">Más de 30 personas</option>
+          </select>
         </div>
+
+        <div class="filter-dropdown">
+          <select class="form-select" [(ngModel)]="selectedHour" (change)="applyFilters()">
+            <option value="">Cualquier horario</option>
+            <option value="12:00">12:00 PM</option>
+            <option value="13:00">1:00 PM</option>
+            <option value="14:00">2:00 PM</option>
+            <option value="20:00">8:00 PM</option>
+            <option value="21:00">9:00 PM</option>
+          </select>
+        </div>
+
+        <button class="btn btn-outline-secondary" (click)="resetFilters()">
+          <i class="bi bi-arrow-counterclockwise"></i> Limpiar filtros
+        </button>
       </div>
     </div>
 
@@ -57,32 +65,40 @@
           </div>
         </div>
 
-        <!-- Si no hay resultados filtrados, mostrar ejemplos fijos como en la imagen -->
+        <!-- Si no hay resultados filtrados, mostrar ejemplos destacados -->
         <ng-container *ngIf="filteredRestaurants.length === 0">
+          <!-- La Picá del Mar -->
           <div class="col-md-4">
             <div class="restaurant-card">
-              <div class="restaurant-image" style="background-image: url('assets/images/restaurante1.jpg');"></div>
+              <div class="restaurant-image" style="background-image: url('https://images.unsplash.com/photo-1555396273-8c073d5c7f6f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60');"></div>
               <div class="restaurant-info">
-                <h3>Restaurante 1</h3>
-                <p class="restaurant-subtitle">Director del restaurante</p>
+                <h3>La Picá del Mar</h3>
+                <p class="restaurant-subtitle">Mariscos y Pescados</p>
+                <p class="restaurant-location"><i class="bi bi-geo-alt"></i> Viña del Mar</p>
               </div>
             </div>
           </div>
+          
+          <!-- Fuego & Sabor Parrilla Urbana -->
           <div class="col-md-4">
             <div class="restaurant-card">
-              <div class="restaurant-image" style="background-image: url('assets/images/restaurante2.jpg');"></div>
+              <div class="restaurant-image" style="background-image: url('https://images.unsplash.com/photo-1558030006-450675392846?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60');"></div>
               <div class="restaurant-info">
-                <h3>Restaurante 2</h3>
-                <p class="restaurant-subtitle">Director del restaurante</p>
+                <h3>Fuego & Sabor Parrilla Urbana</h3>
+                <p class="restaurant-subtitle">Parrilladas y Carnes a la brasa</p>
+                <p class="restaurant-location"><i class="bi bi-geo-alt"></i> Vitacura</p>
               </div>
             </div>
           </div>
+          
+          <!-- Verde Vivo -->
           <div class="col-md-4">
             <div class="restaurant-card">
-              <div class="restaurant-image" style="background-image: url('assets/images/restaurante3.jpg');"></div>
+              <div class="restaurant-image" style="background-image: url('https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60');"></div>
               <div class="restaurant-info">
-                <h3>Restaurante 3</h3>
-                <p class="restaurant-subtitle">Director del restaurante</p>
+                <h3>Verde Vivo</h3>
+                <p class="restaurant-subtitle">Cocina Vegetariana / Vegana</p>
+                <p class="restaurant-location"><i class="bi bi-geo-alt"></i> Providencia</p>
               </div>
             </div>
           </div>

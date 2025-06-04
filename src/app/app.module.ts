@@ -6,8 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { JwtModule } from '@auth0/angular-jwt';
 
 // Componentes
-import { AppComponent } from './app.component';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes, provideRouter } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { SearchComponent } from './search/search.component';
 import { ReservationComponent } from './reservation/reservation.component';
@@ -21,9 +20,6 @@ import { RestaurantRegisterComponent } from './restaurant-register/restaurant-re
 // Módulos personalizados
 import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
-
-// Entorno
-import { environment } from '../environments/environment';
 
 // Función para obtener el token JWT
 export function tokenGetter() {
@@ -50,10 +46,8 @@ export const routes: Routes = [
 
 @NgModule({
   declarations: [
-    // AppComponent es ahora standalone, no debe ser declarado aquí
+    // Solo componentes que no son standalone
     HomeComponent,
-    SearchComponent,
-    ReservationComponent,
     AdminLayoutComponent,
     DashboardComponent,
     ReservationsComponent,
@@ -67,35 +61,31 @@ export const routes: Routes = [
     ReactiveFormsModule,
     HttpClientModule,
     
-    // JWT Module
-    JwtModule.forRoot({
-      config: {
-        tokenGetter: tokenGetter,
-        allowedDomains: ['localhost:3000', 'api.turestaurante.com'], // Ajustar según tu dominio
-        disallowedRoutes: [
-          `${environment.apiUrl}/auth/login`,
-          `${environment.apiUrl}/auth/register`
-        ]
-      }
-    }),
-    
     // Módulos de la aplicación
     CoreModule,
     SharedModule,
     
-    // Componentes (standalone)
+    // Importar componentes standalone
+    SearchComponent,
+    ReservationComponent,
     ProfileComponent,
     RestaurantRegisterComponent,
     
     // Rutas
-    RouterModule.forRoot(routes, {
-      scrollPositionRestoration: 'enabled',
-      anchorScrolling: 'enabled'
+    RouterModule,
+    
+    // JWT Module
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter,
+        allowedDomains: ['localhost:3000'],
+        disallowedRoutes: ['localhost:3000/auth/']
+      }
     })
   ],
   providers: [
-    // Servicios globales pueden ir aquí si no están en CoreModule
-  ],
-  bootstrap: [AppComponent]
+    provideRouter(routes)
+  ]
+  // Eliminamos el array bootstrap ya que usaremos bootstrapApplication
 })
 export class AppModule { }

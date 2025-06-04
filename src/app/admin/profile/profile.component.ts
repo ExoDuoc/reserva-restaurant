@@ -38,8 +38,14 @@ export class ProfileComponent implements OnInit {
   
   // Opciones para selects
   cuisineTypes: string[] = [
-    'Mediterránea', 'Italiana', 'Española', 'Mexicana', 'Asiática', 'Americana', 
-    'Fusión', 'Vegetariana', 'Vegana', 'Mariscos', 'Steakhouse', 'Tradicional'
+    'Comida Chilena Tradicional',
+    'Mariscos y Pescados (cocina costera)',
+    'Comida Internacional',
+    'Parrilladas y Carnes a la brasa',
+    'Vegetariana / Vegana',
+    'Italiana',
+    'Mexicana',
+    'Japonesa'
   ];
   
   priceRanges: {value: string, label: string}[] = [
