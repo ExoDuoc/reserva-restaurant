@@ -1,0 +1,112 @@
+<div class="login-container">
+  <div class="login-card">
+    <!-- Close Button -->
+    <button type="button" class="btn-close" (click)="onClose()" aria-label="Cerrar"></button>
+    
+    <!-- Header -->
+    <div class="text-center mb-4">
+      <h2 class="h4 mb-3">Iniciar Sesión</h2>
+      <p class="text-muted">Selecciona tu tipo de cuenta</p>
+    </div>
+
+    <!-- User Type Selection -->
+    <div class="user-type-selector mb-4">
+      <div class="row g-3">
+        <div class="col-6" *ngFor="let type of userTypes">
+          <div 
+            class="user-type-card" 
+            [class.selected]="selectedUserType === type.value"
+            (click)="selectUserType(type.value)">
+            <div class="type-icon">
+              <i [class]="type.value === 'client' ? 'bi bi-person' : 'bi-shop'"></i>
+            </div>
+            <div class="type-label">
+              <strong>{{ type.label }}</strong>
+              <small class="d-block text-muted">{{ type.description }}</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Login Form -->
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
+      <!-- Email -->
+      <div class="mb-3">
+        <label for="email" class="form-label">Correo electrónico</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+          <input 
+            type="email" 
+            class="form-control" 
+            id="email" 
+            formControlName="email"
+            placeholder="tucorreo@ejemplo.com"
+            [ngClass]="{'is-invalid': (email?.touched || email?.dirty) && email?.invalid}">
+        </div>
+        <div class="invalid-feedback" *ngIf="email?.errors?.['required']">
+          El correo electrónico es obligatorio
+        </div>
+        <div class="invalid-feedback" *ngIf="email?.errors?.['email']">
+          Por favor ingresa un correo electrónico válido
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div class="mb-3">
+        <label for="password" class="form-label">Contraseña</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="bi bi-lock"></i></span>
+          <input 
+            type="password" 
+            class="form-control" 
+            id="password" 
+            formControlName="password"
+            placeholder="••••••••"
+            [ngClass]="{'is-invalid': (password?.touched || password?.dirty) && password?.invalid}">
+        </div>
+        <div class="invalid-feedback" *ngIf="password?.errors?.['required']">
+          La contraseña es obligatoria
+        </div>
+        <div class="invalid-feedback" *ngIf="password?.errors?.['minlength']">
+          La contraseña debe tener al menos 6 caracteres
+        </div>
+      </div>
+
+      <!-- Remember Me & Forgot Password -->
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="rememberMe" formControlName="rememberMe">
+          <label class="form-check-label" for="rememberMe">
+            Recordarme
+          </label>
+        </div>
+        <a href="#" class="text-decoration-none">¿Olvidaste tu contraseña?</a>
+      </div>
+
+      <!-- Submit Button -->
+      <button 
+        type="submit" 
+        class="btn btn-primary w-100 py-2 mb-3"
+        [disabled]="loginForm.invalid || isLoading">
+        <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+        {{ isLoading ? 'Iniciando sesión...' : 'Ingresar' }}
+      </button>
+
+      <!-- Error Message -->
+      <div *ngIf="errorMessage" class="alert alert-danger mt-3" role="alert">
+        {{ errorMessage }}
+      </div>
+
+      <!-- Register Link -->
+      <div class="text-center mt-4">
+        <p class="mb-0">
+          ¿No tienes una cuenta? 
+          <a [routerLink]="['/registro']" class="text-decoration-none" (click)="onClose()">
+            Regístrate aquí
+          </a>
+        </p>
+      </div>
+    </form>
+  </div>
+</div>

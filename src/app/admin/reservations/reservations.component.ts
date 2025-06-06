@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 interface Reservation {
   id: number;
@@ -13,6 +15,8 @@ interface Reservation {
 
 @Component({
   selector: 'app-reservations',
+  standalone: true,
+  imports: [CommonModule, FormsModule],
   templateUrl: './reservations.component.html',
   styleUrls: ['./reservations.component.scss']
 })

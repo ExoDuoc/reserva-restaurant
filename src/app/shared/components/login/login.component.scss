@@ -1,0 +1,157 @@
+.login-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1060;
+  padding: 1rem;
+  backdrop-filter: blur(4px);
+}
+
+.login-card {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 500px;
+  position: relative;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  animation: slideDown 0.3s ease-out;
+}
+
+.btn-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 0.75rem;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+  
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.user-type-selector {
+  .user-type-card {
+    border: 2px solid #dee2e6;
+    border-radius: 10px;
+    padding: 1.25rem 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8f9fa;
+    
+    &:hover {
+      border-color: #0d6efd;
+      background-color: #f1f7ff;
+    }
+    
+    &.selected {
+      border-color: #0d6efd;
+      background-color: #e7f1ff;
+      box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+    }
+    
+    .type-icon {
+      font-size: 2rem;
+      margin-bottom: 0.75rem;
+      color: #0d6efd;
+    }
+    
+    .type-label {
+      small {
+        font-size: 0.75rem;
+      }
+    }
+  }
+}
+
+.form-control {
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #ced4da;
+  
+  &:focus {
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+  }
+}
+
+.input-group-text {
+  background-color: #f8f9fa;
+  border: 1px solid #ced4da;
+  border-right: none;
+  border-radius: 8px 0 0 8px;
+}
+
+.btn-primary {
+  padding: 0.75rem;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s;
+  
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.25);
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.form-check-input {
+  width: 1.2em;
+  height: 1.2em;
+  margin-top: 0.1em;
+  
+  &:checked {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+  }
+}
+
+.invalid-feedback {
+  font-size: 0.8rem;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 576px) {
+  .login-card {
+    padding: 1.5rem;
+  }
+  
+  .user-type-card {
+    padding: 1rem 0.5rem !important;
+    
+    .type-icon {
+      font-size: 1.5rem !important;
+    }
+    
+    small {
+      font-size: 0.7rem !important;
+    }
+  }
+}

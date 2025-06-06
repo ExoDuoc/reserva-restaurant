@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 interface TimeSlot {
   time: string;
@@ -14,6 +16,8 @@ interface DayAvailability {
 
 @Component({
   selector: 'app-availability',
+  standalone: true,
+  imports: [CommonModule, FormsModule],
   templateUrl: './availability.component.html',
   styleUrls: ['./availability.component.scss']
 })
