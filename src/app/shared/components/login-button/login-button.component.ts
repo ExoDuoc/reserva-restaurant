@@ -32,10 +32,18 @@ export class LoginButtonComponent implements OnInit {
   openLoginModal(): void {
     const modalRef = this.modalService.open(LoginComponent, { 
       centered: true,
-      windowClass: 'login-modal'
+      windowClass: 'login-modal',
+      backdrop: 'static',
+      keyboard: false
     });
 
-    // Handle modal close
+    // Handle close event from the component
+    const componentInstance = modalRef.componentInstance as LoginComponent;
+    componentInstance.close.subscribe(() => {
+      modalRef.close();
+    });
+
+    // Handle modal dismiss
     modalRef.result.then(
       () => {
         // Modal closed

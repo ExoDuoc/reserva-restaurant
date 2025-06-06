@@ -100,6 +100,25 @@ import { LoginButtonComponent } from './shared/components/login-button/login-but
       line-height: 1;
     }
     
+    /* Estilos para los títulos del footer */
+    footer h5 {
+      color: #28a745; /* Color verde del botón de registro */
+      font-weight: 600;
+      margin-bottom: 1rem;
+      position: relative;
+      padding-bottom: 0.5rem;
+    }
+    
+    footer h5::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 50px;
+      height: 2px;
+      background-color: #28a745;
+    }
+    
     .logo-text {
       color: #28a745;
       font-weight: 700;

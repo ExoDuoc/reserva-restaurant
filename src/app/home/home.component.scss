@@ -1,121 +1,216 @@
+// Variables
+$color-primary: #3a5a40; // Verde oliva oscuro
+$color-primary-light: #588157; // Verde oliva claro
+$color-white: #fff;
+$transition: all 0.3s ease;
+
+// Estilos base
 .home-container {
   height: 100vh;
   width: 100%;
+  overflow: hidden;
 }
 
+// Sección Hero
 .hero-section {
   height: 100%;
-  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
-              url('/assets/images/restaurant-bg.jpg');
+  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
+              url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80');
   background-size: cover;
   background-position: center;
+  background-attachment: fixed;
   position: relative;
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 20px 0;
-}
-
-.container {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.logo-section {
-  display: flex;
   align-items: center;
-  padding-top: 10px;
+  justify-content: center;
+  text-align: center;
+  padding: 0 15px;
+  color: $color-white;
 }
 
-.logo-icon {
-  font-size: 24px;
-  margin-right: 8px;
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1;
 }
 
-.logo-text {
-  color: white;
-  font-size: 20px;
-  font-weight: bold;
+.hero-section .container {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  animation: fadeInUp 0.8s ease-out forwards;
 }
 
+.hero-section h1 {
+  font-size: 3.5rem;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  line-height: 1.2;
+}
+
+.hero-section p {
+  font-size: 1.5rem;
+  margin-bottom: 2.5rem;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  opacity: 0.9;
+}
+
+// Estilos para el título principal
+.main-title {
+  color: #ffffff; // Verde del tema
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3); // Sombra para mejor legibilidad
+  
+  @media (max-width: 768px) {
+    font-size: 2.5rem; // Tamaño responsivo
+  }
+}
+
+// Botón de reserva
+.btn-reserve {
+  background-color: $color-primary;
+  color: $color-white;
+  border: none;
+  padding: 15px 45px;
+  font-size: 1.25rem;
+  font-weight: 600;
+  border-radius: 50px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: $transition;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  display: inline-block;
+  text-decoration: none;
+
+  &:hover, 
+  &:focus {
+    background-color: $color-primary-light;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    color: $color-white;
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
+
+  // Efecto de brillo al pasar el mouse
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
+    transition: 0.5s;
+  }
+
+  &:hover::after {
+    left: 100%;
+  }
+}
+
+// Estilos para enlaces de navegación
 .nav-links {
   position: absolute;
   top: 20px;
   right: 20px;
+  z-index: 10;
+  
+  a {
+    color: $color-white;
+    text-decoration: none;
+    margin-left: 20px;
+    font-size: 15px;
+    transition: $transition;
+    
+    &:hover {
+      text-decoration: underline;
+      opacity: 0.9;
+    }
+  }
 }
 
-.nav-links a {
-  color: white;
-  text-decoration: none;
-  margin-left: 20px;
-  font-size: 15px;
-}
-
-.nav-links a:hover {
-  text-decoration: underline;
-}
-
-.hero-content {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.btn-reserve {
-  padding: 12px 40px;
-  font-size: 18px;
-  font-weight: 500;
-  border-radius: 30px;
-  background-color: #28a745;
-  border: none;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.btn-reserve:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-  background-color: #218838;
-}
-
+// Pie de página
 .bottom-links {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  right: 0;
   display: flex;
   justify-content: center;
-  margin-bottom: 20px;
+  z-index: 2;
+  
+  a {
+    color: rgba($color-white, 0.8);
+    text-decoration: none;
+    font-size: 14px;
+    transition: $transition;
+    
+    &:hover {
+      color: $color-white;
+      text-decoration: underline;
+    }
+  }
+  
+  .separator {
+    margin: 0 15px;
+    color: rgba($color-white, 0.6);
+  }
 }
 
-.bottom-links a {
-  color: white;
-  text-decoration: none;
-  font-size: 14px;
+// Animación de entrada
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.bottom-links a:hover {
-  text-decoration: underline;
-}
-
-.separator {
-  margin: 0 15px;
-  color: white;
-  position: relative;
-}
-
-.separator::after {
-  content: '|';
-  color: rgba(255, 255, 255, 0.6);
-}
-
+// Media Queries
 @media (max-width: 768px) {
+  .hero-section {
+    h1 {
+      font-size: 2.5rem;
+    }
+    
+    p {
+      font-size: 1.25rem;
+    }
+  }
+  
+  .btn-reserve {
+    padding: 12px 30px;
+    font-size: 1.1rem;
+  }
+  
   .nav-links {
     position: relative;
     top: 0;
     right: 0;
     display: flex;
-    justify-content: flex-end;
-    margin-top: 10px;
+    justify-content: center;
+    margin: 20px 0;
+    width: 100%;
   }
   
   .logo-section {
