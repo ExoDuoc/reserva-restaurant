@@ -20,6 +20,7 @@ import { RestaurantRegisterComponent } from './restaurant-register/restaurant-re
 // Módulos personalizados
 import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
+import { AuthModule } from './auth/auth.module';
 
 // Función para obtener el token JWT
 export function tokenGetter() {
@@ -27,9 +28,9 @@ export function tokenGetter() {
 }
 
 export const routes: Routes = [
-  { path: '', component: SearchComponent },
+  { path: '', component: HomeComponent },
+  { path: 'buscar', component: SearchComponent },
   { path: 'reservar/:restaurantId', component: ReservationComponent },
-  { path: 'registro', component: RestaurantRegisterComponent },
   { 
     path: 'admin', 
     component: AdminLayoutComponent,
@@ -41,13 +42,17 @@ export const routes: Routes = [
       { path: 'perfil', component: ProfileComponent }
     ]
   },
+  // Ruta para el registro de restaurantes
+  { path: 'registro-restaurante', component: RestaurantRegisterComponent },
+  // Redirigir rutas antiguas a las nuevas rutas de autenticación
+  { path: 'registro', redirectTo: 'auth/registro' },
+  { path: 'login', redirectTo: 'auth/login' },
   { path: '**', redirectTo: '' }
 ];
 
 @NgModule({
   declarations: [
     // Solo componentes que no son standalone
-    HomeComponent,
     AdminLayoutComponent,
     DashboardComponent,
     ReservationsComponent,
@@ -64,6 +69,7 @@ export const routes: Routes = [
     // Módulos de la aplicación
     CoreModule,
     SharedModule,
+    AuthModule,
     
     // Importar componentes standalone
     SearchComponent,

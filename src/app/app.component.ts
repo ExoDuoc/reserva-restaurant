@@ -44,10 +44,10 @@ import { NotificationContainerComponent } from './shared/components/notification
           </a>
           <div class="ms-auto d-flex align-items-center">
             <div class="d-flex gap-2">
-              <button class="btn btn-outline-secondary px-3 py-2 fw-medium" routerLink="/register">
+              <button class="btn btn-outline-secondary px-3 py-2 fw-medium" routerLink="/auth/registro">
                 Registrarse
               </button>
-              <button class="btn btn-success px-4 py-2 fw-medium" routerLink="/login">
+              <button class="btn btn-success px-4 py-2 fw-medium" routerLink="/auth/login">
                 <i class="bi bi-box-arrow-in-right me-2"></i>Iniciar sesión
               </button>
             </div>

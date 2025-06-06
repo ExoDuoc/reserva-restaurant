@@ -1,0 +1,132 @@
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow-sm">
+        <div class="card-header bg-success text-white">
+          <h2 class="h4 mb-0">Registro de Restaurante</h2>
+        </div>
+        <div class="card-body p-4">
+          <form [formGroup]="restaurantForm" (ngSubmit)="onSubmit()" novalidate>
+            <!-- Nombre del Restaurante -->
+            <div class="mb-4">
+              <label for="name" class="form-label fw-bold">Nombre del restaurante <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="name" formControlName="name"
+                     [ngClass]="{ 'is-invalid': (submitted || formControls['name'].touched) && formControls['name'].errors }"
+                     placeholder="Ej: El Rincón de los Sabores">
+              <div *ngIf="(submitted || formControls['name'].touched) && formControls['name'].errors" class="invalid-feedback">
+                <div *ngIf="formControls['name'].errors?.['required']">El nombre es obligatorio</div>
+                <div *ngIf="formControls['name'].errors?.['minlength']">El nombre debe tener al menos 3 caracteres</div>
+                <div *ngIf="formControls['name'].errors?.['maxlength']">El nombre no puede superar los 100 caracteres</div>
+              </div>
+            </div>
+
+            <!-- Categoría -->
+            <div class="mb-4">
+              <label for="category" class="form-label fw-bold">Tipo de comida / categoría <span class="text-danger">*</span></label>
+              <select class="form-select" id="category" formControlName="category"
+                      [ngClass]="{ 'is-invalid': (submitted || formControls['category'].touched) && formControls['category'].errors }">
+                <option value="" disabled selected>Selecciona una categoría</option>
+                <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+              </select>
+              <div *ngIf="(submitted || formControls['category'].touched) && formControls['category'].errors" class="invalid-feedback">
+                Por favor selecciona una categoría
+              </div>
+            </div>
+
+            <!-- Descripción -->
+            <div class="mb-4">
+              <label for="description" class="form-label fw-bold">Descripción breve <span class="text-danger">*</span></label>
+              <textarea class="form-control" id="description" formControlName="description" rows="4"
+                        [ngClass]="{ 'is-invalid': (submitted || formControls['description'].touched) && formControls['description'].errors }"
+                        placeholder="Cuéntanos sobre tu restaurante, su historia, especialidades, etc."></textarea>
+              <div *ngIf="(submitted || formControls['description'].touched) && formControls['description'].errors" class="invalid-feedback">
+                <div *ngIf="formControls['description'].errors?.['required']">La descripción es obligatoria</div>
+                <div *ngIf="formControls['description'].errors?.['minlength']">La descripción debe tener al menos 20 caracteres</div>
+                <div *ngIf="formControls['description'].errors?.['maxlength']">La descripción no puede superar los 500 caracteres</div>
+              </div>
+              <div class="form-text">Mínimo 20 caracteres, máximo 500 caracteres</div>
+            </div>
+
+            <!-- Dirección -->
+            <div class="mb-4">
+              <label for="address" class="form-label fw-bold">Dirección <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="address" formControlName="address"
+                     [ngClass]="{ 'is-invalid': (submitted || formControls['address'].touched) && formControls['address'].errors }"
+                     placeholder="Ej: Av. Providencia 1234, Local 5">
+              <div *ngIf="(submitted || formControls['address'].touched) && formControls['address'].errors" class="invalid-feedback">
+                <div *ngIf="formControls['address'].errors?.['required']">La dirección es obligatoria</div>
+                <div *ngIf="formControls['address'].errors?.['minlength']">La dirección debe tener al menos 5 caracteres</div>
+              </div>
+            </div>
+
+            <!-- Ubicación -->
+            <div class="mb-4">
+              <label for="location" class="form-label fw-bold">Ubicación (zona) <span class="text-danger">*</span></label>
+              <select class="form-select" id="location" formControlName="location"
+                      [ngClass]="{ 'is-invalid': (submitted || formControls['location'].touched) && formControls['location'].errors }">
+                <option value="" disabled selected>Selecciona una comuna</option>
+                <option *ngFor="let location of locations" [value]="location">{{ location }}</option>
+              </select>
+              <div *ngIf="(submitted || formControls['location'].touched) && formControls['location'].errors" class="invalid-feedback">
+                Por favor selecciona una ubicación
+              </div>
+            </div>
+
+            <div class="row">
+              <!-- Teléfono -->
+              <div class="col-md-6 mb-4">
+                <label for="phone" class="form-label fw-bold">Teléfono de contacto <span class="text-danger">*</span></label>
+                <input type="tel" class="form-control" id="phone" formControlName="phone"
+                       [ngClass]="{ 'is-invalid': (submitted || formControls['phone'].touched) && formControls['phone'].errors }"
+                       placeholder="Ej: +56 9 1234 5678">
+                <div *ngIf="(submitted || formControls['phone'].touched) && formControls['phone'].errors" class="invalid-feedback">
+                  <div *ngIf="formControls['phone'].errors?.['required']">El teléfono es obligatorio</div>
+                  <div *ngIf="formControls['phone'].errors?.['pattern']">Formato de teléfono inválido</div>
+                </div>
+              </div>
+
+              <!-- Correo Electrónico -->
+              <div class="col-md-6 mb-4">
+                <label for="email" class="form-label fw-bold">Correo electrónico de contacto <span class="text-danger">*</span></label>
+                <input type="email" class="form-control" id="email" formControlName="email"
+                       [ngClass]="{ 'is-invalid': (submitted || formControls['email'].touched) && formControls['email'].errors }"
+                       placeholder="contacto@restaurante.cl">
+                <div *ngIf="(submitted || formControls['email'].touched) && formControls['email'].errors" class="invalid-feedback">
+                  <div *ngIf="formControls['email'].errors?.['required']">El correo electrónico es obligatorio</div>
+                  <div *ngIf="formControls['email'].errors?.['email']">Ingresa un correo electrónico válido</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Capacidad -->
+            <div class="mb-4">
+              <label for="capacity" class="form-label fw-bold">Capacidad máxima de personas <span class="text-danger">*</span></label>
+              <input type="number" class="form-control" id="capacity" formControlName="capacity"
+                     [ngClass]="{ 'is-invalid': (submitted || formControls['capacity'].touched) && formControls['capacity'].errors }"
+                     min="1" max="1000" placeholder="Ej: 50">
+              <div *ngIf="(submitted || formControls['capacity'].touched) && formControls['capacity'].errors" class="invalid-feedback">
+                <div *ngIf="formControls['capacity'].errors?.['required']">La capacidad es obligatoria</div>
+                <div *ngIf="formControls['capacity'].errors?.['min']">La capacidad mínima es 1</div>
+                <div *ngIf="formControls['capacity'].errors?.['max']">La capacidad máxima es 1000</div>
+              </div>
+            </div>
+
+            <!-- Botones -->
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+              <button type="button" class="btn btn-outline-secondary me-md-2" routerLink="/" [disabled]="loading">
+                <i class="bi bi-x-circle me-1"></i>
+                Cancelar
+              </button>
+              <button type="submit" class="btn btn-success" [disabled]="loading">
+                <span *ngIf="loading" class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+                <i *ngIf="!loading" class="bi bi-check-circle me-1"></i>
+                {{ loading ? 'Registrando...' : 'Registrar Restaurante' }}
+                <span class="visually-hidden">Enviar formulario de registro de restaurante</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
