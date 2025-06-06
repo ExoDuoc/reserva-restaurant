@@ -7,6 +7,48 @@
         </div>
         <div class="card-body p-4">
           <form [formGroup]="restaurantForm" (ngSubmit)="onSubmit()" novalidate>
+            <!-- Sección de Imágenes -->
+            <div class="card mb-4">
+              <div class="card-header bg-light">
+                <h5 class="mb-0">Imágenes del Restaurante</h5>
+              </div>
+              <div class="card-body">
+                <!-- Logo del Restaurante -->
+                <div class="mb-4">
+                  <label class="form-label fw-bold">Logo del restaurante <span class="text-danger">*</span></label>
+                  <div class="d-flex align-items-center">
+                    <div class="me-3">
+                      <div class="img-thumbnail" style="width: 120px; height: 120px; overflow: hidden; display: flex; align-items: center; justify-content: center; background-color: #f8f9fa;">
+                        <img *ngIf="logoPreview" [src]="logoPreview" class="img-fluid" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+                        <i *ngIf="!logoPreview" class="bi bi-camera fs-1 text-muted"></i>
+                      </div>
+                    </div>
+                    <div>
+                      <input type="file" class="form-control" accept="image/*" (change)="onFileSelected($event, 'logo')" required>
+                      <div class="form-text">Formato recomendado: JPG o PNG. Tamaño máximo: 2MB</div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Imagen Destacada -->
+                <div>
+                  <label class="form-label fw-bold">Imagen destacada / foto del local</label>
+                  <div class="d-flex align-items-center">
+                    <div class="me-3">
+                      <div class="img-thumbnail" style="width: 200px; height: 150px; overflow: hidden; display: flex; align-items: center; justify-content: center; background-color: #f8f9fa;">
+                        <img *ngIf="featuredImagePreview" [src]="featuredImagePreview" class="img-fluid" style="max-width: 100%; max-height: 100%; object-fit: cover;">
+                        <i *ngIf="!featuredImagePreview" class="bi bi-image fs-1 text-muted"></i>
+                      </div>
+                    </div>
+                    <div>
+                      <input type="file" class="form-control" accept="image/*" (change)="onFileSelected($event, 'featured')">
+                      <div class="form-text">Formato recomendado: JPG o PNG. Tamaño máximo: 5MB</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <!-- Nombre del Restaurante -->
             <div class="mb-4">
               <label for="name" class="form-label fw-bold">Nombre del restaurante <span class="text-danger">*</span></label>
@@ -111,18 +153,149 @@
               </div>
             </div>
 
+            <!-- Horarios de Atención -->
+            <div class="card mb-4">
+              <div class="card-header bg-light">
+                <h3 class="h5 mb-0">Horarios de Atención</h3>
+              </div>
+              <div class="card-body">
+                <!-- Días de la semana -->
+                <div class="mb-4">
+                  <label class="form-label fw-bold d-block">Días de atención <span class="text-danger">*</span></label>
+                  <div class="d-flex flex-wrap gap-3">
+                    <div *ngFor="let day of weekDays" class="form-check">
+                      <input class="form-check-input" type="checkbox" [id]="'day-'+day.id" 
+                             [formControlName]="day.id" formControlName="{{day.id}}">
+                      <label class="form-check-label" [for]="'day-'+day.id">
+                        {{day.name}}
+                      </label>
+                    </div>
+                  </div>
+                  <div *ngIf="(submitted || formControls['daysOpen'].touched) && formControls['daysOpen'].errors" class="invalid-feedback d-block">
+                    <div *ngIf="formControls['daysOpen'].errors?.['required']">Debes seleccionar al menos un día</div>
+                  </div>
+                </div>
+
+                <!-- Horario de Almuerzo -->
+                <div class="row mb-3">
+                  <div class="col-12">
+                    <div class="form-check form-switch mb-3">
+                      <input class="form-check-input" type="checkbox" id="hasLunchService" formControlName="hasLunchService">
+                      <label class="form-check-label fw-bold" for="hasLunchService">Ofrece servicio de almuerzo</label>
+                    </div>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label for="lunchStart" class="form-label">Hora de inicio</label>
+                    <select class="form-select" id="lunchStart" formControlName="lunchStart">
+                      <option *ngFor="let time of hours" [value]="time">{{time}}</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label for="lunchEnd" class="form-label">Hora de término</label>
+                    <select class="form-select" id="lunchEnd" formControlName="lunchEnd">
+                      <option *ngFor="let time of hours" [value]="time">{{time}}</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Horario de Cena -->
+                <div class="row">
+                  <div class="col-12">
+                    <div class="form-check form-switch mb-3">
+                      <input class="form-check-input" type="checkbox" id="hasDinnerService" formControlName="hasDinnerService">
+                      <label class="form-check-label fw-bold" for="hasDinnerService">Ofrece servicio de cena</label>
+                    </div>
+                  </div>
+                  <div class="col-md-6 mb-3" *ngIf="showDinnerTime">
+                    <label for="dinnerStart" class="form-label">Hora de inicio</label>
+                    <select class="form-select" id="dinnerStart" formControlName="dinnerStart">
+                      <option *ngFor="let time of hours" [value]="time">{{time}}</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6 mb-3" *ngIf="showDinnerTime">
+                    <label for="dinnerEnd" class="form-label">Hora de término</label>
+                    <select class="form-select" id="dinnerEnd" formControlName="dinnerEnd">
+                      <option *ngFor="let time of hours" [value]="time">{{time}}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Sección de Datos de la Cuenta -->
+            <div class="card mb-4">
+              <div class="card-header bg-light">
+                <h5 class="mb-0">Datos de la Cuenta de Acceso (Administrador)</h5>
+              </div>
+              <div class="card-body">
+                <div class="row g-3">
+                  <div class="col-md-12">
+                    <label for="representativeName" class="form-label">Nombre del representante o encargado <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="representativeName" formControlName="representativeName"
+                      [ngClass]="{'is-invalid': accountInfo.get('representativeName')?.invalid && (accountInfo.get('representativeName')?.dirty || accountInfo.get('representativeName')?.touched)}">
+                    <div class="invalid-feedback" *ngIf="accountInfo.get('representativeName')?.hasError('required')">
+                      El nombre del representante es obligatorio
+                    </div>
+                    <div class="invalid-feedback" *ngIf="accountInfo.get('representativeName')?.hasError('minlength')">
+                      El nombre debe tener al menos 3 caracteres
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label for="email" class="form-label">Correo electrónico (para login) <span class="text-danger">*</span></label>
+                    <input type="email" class="form-control" id="email" formControlName="email"
+                      [ngClass]="{'is-invalid': accountInfo.get('email')?.invalid && (accountInfo.get('email')?.dirty || accountInfo.get('email')?.touched)}">
+                    <div class="invalid-feedback" *ngIf="accountInfo.get('email')?.hasError('required')">
+                      El correo electrónico es obligatorio
+                    </div>
+                    <div class="invalid-feedback" *ngIf="accountInfo.get('email')?.hasError('email')">
+                      Por favor ingresa un correo electrónico válido
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label for="password" class="form-label">Contraseña <span class="text-danger">*</span></label>
+                    <input type="password" class="form-control" id="password" formControlName="password"
+                      [ngClass]="{'is-invalid': accountInfo.get('password')?.invalid && (accountInfo.get('password')?.dirty || accountInfo.get('password')?.touched)}">
+                    <div class="form-text">Mínimo 8 caracteres, incluyendo mayúsculas, minúsculas y números</div>
+                    <div class="invalid-feedback" *ngIf="accountInfo.get('password')?.hasError('required')">
+                      La contraseña es obligatoria
+                    </div>
+                    <div class="invalid-feedback" *ngIf="accountInfo.get('password')?.hasError('pattern')">
+                      La contraseña debe tener al menos 8 caracteres, incluyendo mayúsculas, minúsculas y números
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label for="confirmPassword" class="form-label">Confirmar contraseña <span class="text-danger">*</span></label>
+                    <input type="password" class="form-control" id="confirmPassword" formControlName="confirmPassword"
+                      [ngClass]="{'is-invalid': (accountInfo.hasError('passwordMismatch') || accountInfo.get('confirmPassword')?.invalid) && (accountInfo.get('confirmPassword')?.dirty || accountInfo.get('confirmPassword')?.touched)}">
+                    <div class="invalid-feedback" *ngIf="accountInfo.hasError('passwordMismatch')">
+                      Las contraseñas no coinciden
+                    </div>
+                    <div class="invalid-feedback" *ngIf="accountInfo.get('confirmPassword')?.hasError('required')">
+                      Por favor confirma tu contraseña
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <!-- Botones -->
-            <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
-              <button type="button" class="btn btn-outline-secondary me-md-2" routerLink="/" [disabled]="loading">
-                <i class="bi bi-x-circle me-1"></i>
-                Cancelar
+            <div class="d-grid gap-2 d-md-flex justify-content-between mt-4">
+              <button type="button" class="btn btn-outline-secondary" (click)="onCancel()">
+                <i class="bi bi-arrow-left me-1"></i> Volver
               </button>
-              <button type="submit" class="btn btn-success" [disabled]="loading">
-                <span *ngIf="loading" class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
-                <i *ngIf="!loading" class="bi bi-check-circle me-1"></i>
-                {{ loading ? 'Registrando...' : 'Registrar Restaurante' }}
-                <span class="visually-hidden">Enviar formulario de registro de restaurante</span>
-              </button>
+              <div>
+                <button type="button" class="btn btn-outline-secondary me-2" (click)="restaurantForm.reset()">
+                  <i class="bi bi-arrow-counterclockwise me-1"></i> Limpiar
+                </button>
+                <button type="submit" class="btn btn-primary" [disabled]="loading || restaurantForm.invalid">
+                  <span *ngIf="loading" class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+                  <i *ngIf="!loading" class="bi bi-check-circle me-1"></i>
+                  {{ loading ? 'Registrando...' : 'Registrar Restaurante' }}
+                </button>
+              </div>
             </div>
           </form>
         </div>
