@@ -33,16 +33,34 @@ import { RestaurantFormComponent } from './restaurant-form/restaurant-form.compo
       border: none;
       border-radius: 10px;
       overflow: hidden;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
     
     .card-header {
-      background-color: #28a745 !important;
-      padding: 1.25rem 1.5rem;
+      background-color: #2c3e50 !important; /* Azul oscuro en lugar de verde */
+      padding: 1.5rem;
       border-bottom: none;
+      color: white; /* Asegura que el texto sea blanco */
+    }
+    
+    .card-header h2 {
+      color: white !important; /* Fuerza el color blanco en el título */
     }
     
     .card-body {
       padding: 0;
+      background-color: #f8f9fa;
+    }
+    
+    .btn-outline-light {
+      border-color: rgba(255, 255, 255, 0.5);
+      color: white;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-outline-light:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      border-color: white;
     }
   `]
 })

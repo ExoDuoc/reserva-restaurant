@@ -93,6 +93,18 @@ export class RestaurantFormComponent implements OnInit {
     }
   }
 
+  // Limpiar el formulario
+  clearForm(): void {
+    if (confirm('¿Estás seguro de que deseas limpiar todos los campos del formulario?')) {
+      this.restaurantForm.reset();
+      this.logoPreview = null;
+      this.featuredImagePreview = null;
+      this.logoFile = null;
+      this.featuredImageFile = null;
+      this.submitted = false;
+    }
+  }
+
   // Manejar la selección de archivos
   onFileSelected(event: Event, type: 'logo' | 'featured'): void {
     const input = event.target as HTMLInputElement;

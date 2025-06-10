@@ -1,87 +1,86 @@
 <div class="container py-5">
-  <!-- Encabezado y búsqueda -->
-  <div class="row mb-4">
-    <div class="col-12 text-center mb-4">
-      <h1 class="display-5 fw-bold text-primary">Encuentra tu Restaurante Ideal</h1>
-      <p class="lead">Busca por nombre, ubicación o tipo de cocina</p>
-    </div>
-    
-    <!-- Barra de búsqueda -->
-    <div class="col-md-12 mb-4">
-      <div class="card shadow-sm">
-        <div class="card-body">
-          <div class="row g-3">
-            <div class="col-md-4">
-              <label class="form-label">Buscar</label>
-              <div class="input-group">
-                <span class="input-group-text">
-                  <i class="bi bi-search"></i>
-                </span>
-                <input 
-                  type="text" 
-                  class="form-control" 
-                  placeholder="Buscar restaurantes..."
-                  [(ngModel)]="filtros.searchTerm"
-                  (input)="applyFilters()"
-                  name="searchTerm">
-                <button 
-                  *ngIf="filtros.searchTerm"
-                  class="btn btn-outline-secondary" 
-                  type="button" 
-                  (click)="clearFilter('searchTerm')">
-                  <i class="bi bi-x-lg"></i>
-                </button>
-              </div>
-            </div>
-            
-            <div class="col-md-3">
-              <label class="form-label">Categoría</label>
-              <select 
-                class="form-select" 
-                [(ngModel)]="filtros.category"
-                (change)="applyFilters()">
-                <option value="all">Todas las categorías</option>
-                <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
-              </select>
-            </div>
-            
-            <div class="col-md-3">
-              <label class="form-label">Ubicación</label>
-              <select 
-                class="form-select" 
-                [(ngModel)]="filtros.location"
-                (change)="applyFilters()">
-                <option value="all">Todas las ubicaciones</option>
-                <option *ngFor="let location of locations" [value]="location">{{ location }}</option>
-              </select>
-            </div>
-            
-            <div class="col-md-2">
-              <label class="form-label">Personas</label>
-              <input 
-                type="number" 
-                class="form-control" 
-                min="1" 
-                [(ngModel)]="filtros.partySize"
-                (change)="applyFilters()"
-                placeholder="Ej: 4">
-            </div>
+  <!-- Barra de búsqueda moderna -->
+  <div class="search-modern">
+    <div class="search-container">
+      <div class="search-header">
+        <h1>¿Qué te apetece comer hoy?</h1>
+        <p>Descubre los mejores restaurantes cerca de ti</p>
+      </div>
+      
+      <div class="search-box">
+        <div class="search-input-container">
+          <div class="search-icon-container">
+            <i class="bi bi-search"></i>
+          </div>
+          <input 
+            type="text" 
+            class="search-input" 
+            placeholder="Busca por restaurante, cocina o plato..."
+            [(ngModel)]="filtros.searchTerm"
+            (input)="applyFilters()"
+            name="searchTerm">
+          <button 
+            *ngIf="filtros.searchTerm"
+            class="clear-btn" 
+            type="button" 
+            (click)="clearFilter('searchTerm')">
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>
+        
+        <div class="filters-container">
+          <!-- Filtro de categoría -->
+          <div class="filter-selector">
+            <i class="bi bi-tag"></i>
+            <select 
+              class="form-select" 
+              [(ngModel)]="filtros.category"
+              (change)="applyFilters()">
+              <option value="all">Todas las categorías</option>
+              <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+            </select>
           </div>
           
-          <div class="row mt-3">
-            <div class="col-12">
-              <div class="form-check form-switch">
-                <input 
-                  class="form-check-input" 
-                  type="checkbox" 
-                  id="showAvailableOnly"
-                  [(ngModel)]="filtros.showAvailableOnly"
-                  (change)="applyFilters()">
-                <label class="form-check-label" for="showAvailableOnly">
-                  Mostrar solo restaurantes con disponibilidad
-                </label>
-              </div>
-            </div>
+          <!-- Filtro de ubicación -->
+          <div class="filter-selector">
+            <i class="bi bi-geo-alt"></i>
+            <select 
+              class="form-select" 
+              [(ngModel)]="filtros.location"
+              (change)="applyFilters()">
+              <option value="all">Todas las ubicaciones</option>
+              <option *ngFor="let location of locations" [value]="location">{{ location }}</option>
+            </select>
+          </div>
+          
+          <!-- Filtro de número de personas -->
+          <div class="filter-selector">
+            <i class="bi bi-people"></i>
+            <select 
+              class="form-select"
+              [(ngModel)]="filtros.partySize"
+              (change)="applyFilters()">
+              <option [ngValue]="null">Personas</option>
+              <option *ngFor="let num of [1,2,3,4,5,6,7,8,9,10]" [value]="num">
+                {{ num }} {{ num === 1 ? 'persona' : 'personas' }}
+              </option>
+              <option value="10">10+ personas</option>
+            </select>
+          </div>
+        </div>
+        
+        <!-- Filtro de disponibilidad -->
+        <div class="availability-filter mt-3">
+          <div class="form-check form-switch">
+            <input 
+              class="form-check-input" 
+              type="checkbox" 
+              id="showAvailableOnly"
+              [(ngModel)]="filtros.showAvailableOnly"
+              (change)="applyFilters()">
+            <label class="form-check-label" for="showAvailableOnly">
+              Mostrar solo restaurantes con disponibilidad
+            </label>
           </div>
         </div>
       </div>

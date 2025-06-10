@@ -2,8 +2,8 @@
   <div class="row justify-content-center">
     <div class="col-md-8">
       <div class="card shadow-sm">
-        <div class="card-header bg-success text-white">
-          <h2 class="h4 mb-0">Registro de Restaurante</h2>
+        <div class="card-header bg-primary text-white">
+          <h2 class="h4 mb-0">Información del Restaurante</h2>
         </div>
         <div class="card-body p-4">
           <form [formGroup]="restaurantForm" (ngSubmit)="onSubmit()" novalidate>
@@ -282,18 +282,20 @@
             </div>
 
             <!-- Botones -->
-            <div class="d-grid gap-2 d-md-flex justify-content-between mt-4">
-              <button type="button" class="btn btn-outline-secondary" (click)="onCancel()">
-                <i class="bi bi-arrow-left me-1"></i> Volver
-              </button>
+            <div class="d-grid gap-2 d-md-flex justify-content-between mt-4" style="padding: 15px; background-color: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;">
               <div>
-                <button type="button" class="btn btn-outline-secondary me-2" (click)="restaurantForm.reset()">
-                  <i class="bi bi-arrow-counterclockwise me-1"></i> Limpiar
+                <button type="button" class="btn btn-outline-secondary" (click)="onCancel()">
+                  <i class="bi bi-arrow-left me-1"></i> Volver
                 </button>
-                <button type="submit" class="btn btn-primary" [disabled]="loading || restaurantForm.invalid">
+              </div>
+              <div class="d-flex">
+                <button type="button" class="btn btn-outline-secondary me-2" (click)="clearForm()">
+                  <i class="bi bi-eraser me-1"></i> Limpiar
+                </button>
+                <button type="submit" class="btn btn-outline-success" [disabled]="loading || restaurantForm.invalid">
                   <span *ngIf="loading" class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
-                  <i *ngIf="!loading" class="bi bi-check-circle me-1"></i>
-                  {{ loading ? 'Registrando...' : 'Registrar Restaurante' }}
+                  <i *ngIf="!loading" class="bi bi-send-fill me-1"></i>
+                  {{ loading ? 'Enviando...' : 'Enviar' }}
                 </button>
               </div>
             </div>

@@ -1,3 +1,225 @@
+// Estilos para la barra de búsqueda moderna
+.search-modern {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  padding: 3rem 1rem;
+  margin: -1.5rem -1.5rem 2rem -1.5rem;
+  border-radius: 0 0 30px 30px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  
+  .search-container {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  
+  .search-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #2c3e50;
+      margin-bottom: 0.5rem;
+      line-height: 1.2;
+      background: linear-gradient(90deg, #2c3e50, #28a745);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    p {
+      font-size: 1.1rem;
+      color: #6c757d;
+      margin: 0;
+    }
+  }
+  
+  .search-box {
+    background: white;
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  }
+  
+  .search-input-container {
+    position: relative;
+    margin-bottom: 1.5rem;
+    
+    .search-icon-container {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #28a745;
+      font-size: 1.2rem;
+      z-index: 2;
+    }
+    
+    .search-input {
+      width: 100%;
+      padding: 1rem 1rem 1rem 3rem;
+      font-size: 1.05rem;
+      border: 2px solid #e9ecef;
+      border-radius: 12px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      background-color: #f8f9fa;
+      color: #2c3e50;
+      font-weight: 500;
+      
+      &:focus {
+        outline: none;
+        border-color: #28a745;
+        background-color: white;
+        box-shadow: 0 0 0 4px rgba(40, 167, 69, 0.15);
+      }
+      
+      &::placeholder {
+        color: #adb5bd;
+        font-weight: 400;
+      }
+    }
+    
+    .clear-btn {
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: #e9ecef;
+      border: none;
+      color: #6c757d;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      
+      &:hover {
+        background: #dee2e6;
+        color: #495057;
+      }
+      
+      i {
+        font-size: 0.9rem;
+      }
+    }
+  }
+  
+  .filters-container {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    
+    .filter-selector {
+      flex: 1;
+      min-width: 200px;
+      position: relative;
+      
+      input[type="number"] {
+        padding-left: 2.5rem;
+        &::-webkit-inner-spin-button,
+        &::-webkit-outer-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+        }
+      }
+      
+      i {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #28a745;
+        font-size: 1.1rem;
+        z-index: 2;
+      }
+      
+      select {
+        width: 100%;
+        padding: 0.8rem 1rem 0.8rem 2.8rem;
+        font-size: 0.95rem;
+        border: 2px solid #e9ecef;
+        border-radius: 12px;
+        background-color: #f8f9fa;
+        color: #2c3e50;
+        font-weight: 500;
+        cursor: pointer;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        
+        &:focus {
+          outline: none;
+          border-color: #28a745;
+          background-color: white;
+          box-shadow: 0 0 0 4px rgba(40, 167, 69, 0.15);
+        }
+        
+        &::-ms-expand {
+          display: none;
+        }
+      }
+      
+      &::after {
+        content: '⌄';
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #6c757d;
+        pointer-events: none;
+        font-size: 1.2rem;
+      }
+    }
+  }
+  
+  /* Estilos para el filtro de disponibilidad */
+  .availability-filter {
+    .form-check-input:checked {
+      background-color: #28a745;
+      border-color: #28a745;
+    }
+    
+    .form-check-label {
+      color: #495057;
+      font-size: 0.95rem;
+      cursor: pointer;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    padding: 2rem 1rem;
+    border-radius: 0 0 20px 20px;
+    
+    .search-header {
+      h1 {
+        font-size: 2rem;
+      }
+      
+      p {
+        font-size: 1rem;
+      }
+    }
+    
+    .search-box {
+      padding: 1.25rem;
+    }
+    
+    .filters-container {
+      flex-direction: column;
+      gap: 0.75rem;
+      
+      .filter-selector {
+        width: 100%;
+        min-width: 100%;
+      }
+    }
+  }
+}
+
 // Estilos para las tarjetas de restaurante
 .restaurant-card {
   transition: transform 0.3s ease, box-shadow 0.3s ease;

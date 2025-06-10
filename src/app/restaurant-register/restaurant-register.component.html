@@ -297,10 +297,20 @@
       
       <div class="form-actions">
         <div class="required-note">* Campos obligatorios</div>
-        <button type="submit" class="btn btn-primary btn-register" [disabled]="formSubmitted && (registerForm.invalid || scheduleForm.invalid)">
-          <i class="bi bi-building-add me-2"></i>
-          Crear Cuenta
-        </button>
+        <div class="button-group">
+          <button type="button" 
+                  class="btn btn-outline-secondary me-2"
+                  (click)="clearForm()">
+            <i class="bi bi-x-circle me-1"></i>
+            Limpiar
+          </button>
+          <button type="submit" 
+                  class="btn btn-success"
+                  [disabled]="formSubmitted && (registerForm.invalid || scheduleForm.invalid)">
+            <i class="bi bi-send-fill me-1"></i>
+            Enviar
+          </button>
+        </div>
       </div>
     </form>
   </div>
