@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
-import { SearchComponent } from './search/search.component';
 import { ReservationComponent } from './reservation/reservation.component';
 import { AdminLayoutComponent } from './admin/admin-layout/admin-layout.component';
 import { DashboardComponent } from './admin/dashboard/dashboard.component';
@@ -8,10 +7,11 @@ import { ReservationsComponent } from './admin/reservations/reservations.compone
 import { AvailabilityComponent } from './admin/availability/availability.component';
 import { ProfileComponent } from './admin/profile/profile.component';
 import { RestaurantRegisterComponent } from './restaurant-register/restaurant-register.component';
+import { RestaurantListComponent } from './restaurant-list/restaurant-list.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'buscar', component: SearchComponent },
+  { path: 'restaurantes', component: RestaurantListComponent },
   { path: 'reservar/:restaurantId', component: ReservationComponent },
   { 
     path: 'admin', 

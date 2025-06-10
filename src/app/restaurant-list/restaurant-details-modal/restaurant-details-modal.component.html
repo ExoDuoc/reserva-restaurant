@@ -1,0 +1,211 @@
+<div class="modal-header bg-light">
+  <h4 class="modal-title m-0">
+    {{ restaurant?.name || 'Detalles del Restaurante' }}
+  </h4>
+  <button 
+    type="button" 
+    class="btn-close" 
+    aria-label="Cerrar" 
+    (click)="activeModal.dismiss('close')">
+  </button>
+</div>
+
+<div class="modal-body">
+  <div class="row g-4">
+    <!-- Columna de la imagen -->
+    <div class="col-md-6">
+      <div class="position-relative rounded overflow-hidden" style="height: 200px;">
+        <img 
+          [src]="restaurant?.imageUrl || 'assets/images/restaurant-placeholder.jpg'" 
+          [alt]="restaurant?.name || 'Restaurante'" 
+          class="img-fluid w-100 h-100 object-fit-cover"
+          onerror="this.src='assets/images/restaurant-placeholder.jpg'"
+        >
+        <!-- Badge de disponibilidad -->
+        <span 
+          class="position-absolute top-2 end-2 badge" 
+          [ngClass]="{
+            'bg-success': restaurant?.available, 
+            'bg-secondary': !restaurant?.available
+          }">
+          {{ restaurant?.available ? 'Disponible' : 'Sin disponibilidad' }}
+        </span>
+        
+        <!-- Rating si existe -->
+        <span 
+          *ngIf="restaurant && restaurant.rating !== undefined"
+          class="position-absolute bottom-0 start-0 m-2 badge bg-warning text-dark">
+          <i class="bi bi-star-fill"></i> {{ restaurant.rating | number:'1.1-1' }}
+        </span>
+      </div>
+      
+      <!-- Descripción -->
+      <div class="mt-3" *ngIf="restaurant">
+        <p class="text-muted mb-0" *ngIf="restaurant.description">
+          {{ restaurant.description }}
+        </p>
+      </div>
+    </div>
+
+    <!-- Columna de información -->
+    <div class="col-md-6">
+      <h5 class="mb-4 border-bottom pb-2">
+        <i class="bi bi-info-circle me-2"></i>Información del Restaurante
+      </h5>
+      
+      <ul class="list-unstyled">
+        <!-- Categoría -->
+        <li class="mb-3">
+          <div class="d-flex">
+            <div class="text-muted me-3" style="width: 100px;">
+              <i class="bi bi-tag me-2"></i>Categoría:
+            </div>
+            <div>{{ restaurant?.category || 'No especificada' }}</div>
+          </div>
+        </li>
+        
+        <!-- Ubicación -->
+        <ng-container *ngIf="restaurant && restaurant.location">
+          <li class="mb-3">
+            <div class="d-flex">
+              <div class="text-muted me-3" style="width: 100px;">
+                <i class="bi bi-geo-alt me-2"></i>Ubicación:
+              </div>
+              <div>{{ restaurant.location }}</div>
+            </div>
+          </li>
+        </ng-container>
+        
+        <!-- Dirección -->
+        <ng-container *ngIf="restaurant && restaurant.address">
+          <li class="mb-3">
+            <div class="d-flex">
+              <div class="text-muted me-3" style="width: 100px;">
+                <i class="bi bi-geo me-2"></i>Dirección:
+              </div>
+              <div>{{ restaurant.address }}</div>
+            </div>
+          </li>
+        </ng-container>
+        
+        <!-- Teléfono -->
+        <ng-container *ngIf="restaurant && restaurant.phone">
+          <li class="mb-3">
+            <div class="d-flex">
+              <div class="text-muted me-3" style="width: 100px;">
+                <i class="bi bi-telephone me-2"></i>Teléfono:
+              </div>
+              <div>
+                <a [href]="'tel:' + restaurant.phone" class="text-decoration-none">
+                  {{ restaurant.phone }}
+                </a>
+              </div>
+            </div>
+          </li>
+        </ng-container>
+        
+        <!-- Email -->
+        <ng-container *ngIf="restaurant && restaurant.email">
+          <li class="mb-3">
+            <div class="d-flex">
+              <div class="text-muted me-3" style="width: 100px;">
+                <i class="bi bi-envelope me-2"></i>Email:
+              </div>
+              <div>
+                <a [href]="'mailto:' + restaurant.email" class="text-decoration-none">
+                  {{ restaurant.email }}
+                </a>
+              </div>
+            </div>
+          </li>
+        </ng-container>
+        
+        <!-- Capacidad -->
+        <ng-container *ngIf="restaurant">
+          <li class="mb-3">
+            <div class="d-flex">
+              <div class="text-muted me-3" style="width: 100px;">
+                <i class="bi bi-people me-2"></i>Capacidad:
+              </div>
+              <div>
+                {{ getCapacityText(restaurant) }}
+              </div>
+            </div>
+          </li>
+        </ng-container>
+        
+        <!-- Horario -->
+        <li class="mb-3">
+          <div class="d-flex">
+            <div class="text-muted me-3" style="width: 100px;">
+              <i class="bi bi-clock me-2"></i>Horario:
+            </div>
+            <div>
+              <pre class="mb-0" style="white-space: pre-line; font-family: inherit;">{{ openingHoursText }}</pre>
+            </div>
+          </div>
+        </li>
+        
+        <!-- Rango de precios -->
+        <li class="mb-3" *ngIf="priceRangeText !== 'No especificado'">
+          <div class="d-flex">
+            <div class="text-muted me-3" style="width: 100px;">
+              <i class="bi bi-cash-coin me-2"></i>Precio:
+            </div>
+            <div>{{ priceRangeText }}</div>
+          </div>
+        </li>
+      </ul>
+      
+      <!-- Horarios disponibles -->
+      <div class="mt-4 pt-3 border-top" *ngIf="availableHoursList.length > 0">
+        <h6 class="mb-3 d-flex align-items-center">
+          <i class="bi bi-clock-history me-2"></i>Próximos horarios disponibles:
+        </h6>
+        <div class="d-flex flex-wrap gap-2">
+          <button 
+            *ngFor="let hour of availableHoursList"
+            class="btn btn-outline-primary btn-sm"
+            (click)="reservar(restaurant!, hour)"
+            [title]="'Reservar a las ' + hour"
+            [disabled]="!restaurant?.available">
+            {{ hour }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Pie del modal -->
+<div class="modal-footer bg-light">
+  <button 
+    type="button" 
+    class="btn btn-outline-secondary" 
+    (click)="activeModal.dismiss('close')">
+    <i class="bi bi-x-lg me-1"></i>
+    Cerrar
+  </button>
+  
+  <ng-container *ngIf="restaurant?.available; else notAvailable">
+    <button 
+      type="button" 
+      class="btn btn-primary"
+      [routerLink]="['/reservar', restaurant?.id]"
+      (click)="activeModal.close('reserve')"
+      [disabled]="!restaurant?.id">
+      <i class="bi bi-calendar-check me-1"></i>
+      Reservar Ahora
+    </button>
+  </ng-container>
+  
+  <ng-template #notAvailable>
+    <button 
+      type="button" 
+      class="btn btn-secondary"
+      disabled>
+      <i class="bi bi-calendar-x me-1"></i>
+      Sin disponibilidad
+    </button>
+  </ng-template>
+</div>

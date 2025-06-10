@@ -1,0 +1,249 @@
+<div class="container py-5">
+  <!-- Encabezado y búsqueda -->
+  <div class="row mb-4">
+    <div class="col-12 text-center mb-4">
+      <h1 class="display-5 fw-bold text-primary">Encuentra tu Restaurante Ideal</h1>
+      <p class="lead">Busca por nombre, ubicación o tipo de cocina</p>
+    </div>
+    
+    <!-- Barra de búsqueda -->
+    <div class="col-md-12 mb-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-md-4">
+              <label class="form-label">Buscar</label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="bi bi-search"></i>
+                </span>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  placeholder="Buscar restaurantes..."
+                  [(ngModel)]="filtros.searchTerm"
+                  (input)="applyFilters()"
+                  name="searchTerm">
+                <button 
+                  *ngIf="filtros.searchTerm"
+                  class="btn btn-outline-secondary" 
+                  type="button" 
+                  (click)="clearFilter('searchTerm')">
+                  <i class="bi bi-x-lg"></i>
+                </button>
+              </div>
+            </div>
+            
+            <div class="col-md-3">
+              <label class="form-label">Categoría</label>
+              <select 
+                class="form-select" 
+                [(ngModel)]="filtros.category"
+                (change)="applyFilters()">
+                <option value="all">Todas las categorías</option>
+                <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+              </select>
+            </div>
+            
+            <div class="col-md-3">
+              <label class="form-label">Ubicación</label>
+              <select 
+                class="form-select" 
+                [(ngModel)]="filtros.location"
+                (change)="applyFilters()">
+                <option value="all">Todas las ubicaciones</option>
+                <option *ngFor="let location of locations" [value]="location">{{ location }}</option>
+              </select>
+            </div>
+            
+            <div class="col-md-2">
+              <label class="form-label">Personas</label>
+              <input 
+                type="number" 
+                class="form-control" 
+                min="1" 
+                [(ngModel)]="filtros.partySize"
+                (change)="applyFilters()"
+                placeholder="Ej: 4">
+            </div>
+          </div>
+          
+          <div class="row mt-3">
+            <div class="col-12">
+              <div class="form-check form-switch">
+                <input 
+                  class="form-check-input" 
+                  type="checkbox" 
+                  id="showAvailableOnly"
+                  [(ngModel)]="filtros.showAvailableOnly"
+                  (change)="applyFilters()">
+                <label class="form-check-label" for="showAvailableOnly">
+                  Mostrar solo restaurantes con disponibilidad
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+    <p class="mt-2">Cargando restaurantes...</p>
+  </div>
+
+  <!-- Mensaje de error -->
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
+  </div>
+
+  <!-- Lista de restaurantes -->
+  <div *ngIf="!loading && !error">
+    <!-- Filtros activos -->
+    <div class="mb-4" *ngIf="hasActiveFilters()">
+      <div class="d-flex align-items-center flex-wrap gap-2">
+        <span class="fw-medium">Filtros activos:</span>
+        
+        <!-- Filtro de búsqueda -->
+        <span *ngIf="filtros.searchTerm" class="badge bg-primary d-flex align-items-center">
+          "{{ filtros.searchTerm }}"
+          <button type="button" class="btn-close btn-close-white btn-sm ms-2" (click)="clearFilter('searchTerm')"></button>
+        </span>
+        
+        <!-- Filtro de categoría -->
+        <span *ngIf="filtros.category !== 'all'" class="badge bg-primary d-flex align-items-center">
+          {{ filtros.category }}
+          <button type="button" class="btn-close btn-close-white btn-sm ms-2" (click)="clearFilter('category')"></button>
+        </span>
+        
+        <!-- Filtro de ubicación -->
+        <span *ngIf="filtros.location !== 'all'" class="badge bg-primary d-flex align-items-center">
+          {{ filtros.location }}
+          <button type="button" class="btn-close btn-close-white btn-sm ms-2" (click)="clearFilter('location')"></button>
+        </span>
+        
+        <!-- Filtro de tamaño de grupo -->
+        <span *ngIf="filtros.partySize > 2" class="badge bg-primary d-flex align-items-center">
+          {{ filtros.partySize }} personas
+          <button type="button" class="btn-close btn-close-white btn-sm ms-2" (click)="clearFilter('partySize')"></button>
+        </span>
+        
+        <!-- Botón para limpiar todos los filtros -->
+        <button type="button" class="btn btn-link btn-sm p-0 ms-2" (click)="clearAllFilters()">
+          Limpiar todos
+        </button>
+      </div>
+    </div>
+    
+    <!-- Resultados -->
+    <div *ngIf="filteredRestaurants.length > 0; else noResults" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+      <div *ngFor="let restaurant of filteredRestaurants" class="col">
+        <div class="card h-100 restaurant-card shadow-sm">
+          <div class="position-relative">
+            <img 
+              [src]="restaurant.imageUrl" 
+              class="card-img-top" 
+              [alt]="restaurant.name"
+              style="height: 200px; object-fit: cover;">
+            <div class="position-absolute top-0 end-0 m-2">
+              <span class="badge bg-success" *ngIf="restaurant.available">
+                <i class="bi bi-check-circle me-1"></i> Disponible
+              </span>
+              <span class="badge bg-danger" *ngIf="!restaurant.available">
+                <i class="bi bi-x-circle me-1"></i> Sin disponibilidad
+              </span>
+            </div>
+            <div class="position-absolute bottom-0 start-0 m-2">
+              <span class="badge bg-dark opacity-75">
+                <i class="bi bi-star-fill text-warning me-1"></i>
+                {{ restaurant.rating }}
+              </span>
+            </div>
+          </div>
+          
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <h5 class="card-title mb-0">{{ restaurant.name }}</h5>
+              <span class="badge" [ngClass]="{
+                'bg-success': restaurant.available,
+                'bg-secondary': !restaurant.available
+              }">
+                {{ restaurant.priceRange }}
+              </span>
+            </div>
+            
+            <p class="text-muted mb-2">
+              <i class="bi bi-tag me-1"></i> {{ restaurant.category }}
+              <span class="ms-2">
+                <i class="bi bi-geo-alt me-1"></i> {{ restaurant.location }}
+              </span>
+            </p>
+            
+            <p class="card-text text-muted small mb-3">
+              {{ restaurant.description }}
+            </p>
+            
+            <div class="d-flex justify-content-between align-items-center mt-auto">
+              <div>
+                <i class="bi bi-people me-1"></i>
+                <small class="text-muted">Hasta {{ restaurant.maxCapacity }} personas</small>
+              </div>
+              <div>
+                <small class="text-muted">
+                  <i class="bi bi-clock me-1"></i>
+                  {{ restaurant.openingHours }}
+                </small>
+              </div>
+            </div>
+          </div>
+          
+          <div class="card-footer bg-transparent border-top-0 pt-0">
+            <div class="d-grid gap-2">
+              <button 
+                class="btn btn-primary"
+                [routerLink]="['/reservar', restaurant.id]"
+                [disabled]="!restaurant.available">
+                <i class="bi bi-calendar-check me-1"></i>
+                {{ restaurant.available ? 'Reservar Ahora' : 'Sin disponibilidad' }}
+              </button>
+              <button 
+                class="btn btn-outline-secondary btn-sm"
+                (click)="viewRestaurantDetails(restaurant)">
+                <i class="bi bi-info-circle me-1"></i> Ver detalles
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Sin resultados -->
+    <ng-template #noResults>
+      <div class="text-center py-5">
+        <div class="mb-4">
+          <i class="bi bi-search display-1 text-muted"></i>
+        </div>
+        <h4>No se encontraron restaurantes</h4>
+        <p class="text-muted">Intenta con otros filtros de búsqueda</p>
+        <button class="btn btn-outline-primary" (click)="clearAllFilters()">
+          <i class="bi bi-x-circle me-1"></i> Limpiar filtros
+        </button>
+      </div>
+    </ng-template>
+    <!-- Sin resultados -->
+    <ng-template #noResults>
+      <div class="text-center py-5">
+        <i class="bi bi-emoji-frown display-1 text-muted"></i>
+        <h4 class="mt-3">No se encontraron restaurantes</h4>
+        <p class="mb-4">Intenta con otros términos de búsqueda o categorías</p>
+        <button class="btn btn-outline-primary" (click)="clearAllFilters()">
+          <i class="bi bi-arrow-counterclockwise me-1"></i> Limpiar filtros
+        </button>
+      </div>
+    </ng-template>
+  </div>
+</div>
