@@ -1,13 +1,43 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
-import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors, ValidatorFn, ReactiveFormsModule } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
+import { CommonModule } from '@angular/common';
+
+// Importar iconos de FontAwesome
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { 
+  faUser, 
+  faEnvelope, 
+  faLock, 
+  faPhone, 
+  faUtensils,
+  faUserTie,
+  faArrowLeft
+} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-register',
+  standalone: true,
+  imports: [
+    CommonModule, 
+    ReactiveFormsModule, 
+    RouterLink,
+    FontAwesomeModule
+  ],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
+  // Iconos
+  faUser = faUser;
+  faEnvelope = faEnvelope;
+  faLock = faLock;
+  faPhone = faPhone;
+  faUtensils = faUtensils;
+  faUserTie = faUserTie;
+  faArrowLeft = faArrowLeft;
+
+  // Estado del formulario
   registerForm: FormGroup;
   submitted = false;
   loading = false;

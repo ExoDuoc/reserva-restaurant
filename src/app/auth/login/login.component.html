@@ -6,6 +6,28 @@
     </div>
 
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+      <!-- Tipo de Usuario -->
+      <div class="form-group user-type-selector">
+        <div class="user-type-options">
+          <div 
+            *ngFor="let type of userTypes" 
+            [class.selected]="selectedUserType === type.value"
+            (click)="selectUserType(type.value)"
+            class="user-type-option"
+          >
+            <div class="option-content">
+              <div class="option-icon">
+                <i class="bi" [class.bi-person]="type.value === 'client'" [class.bi-shop]="type.value === 'restaurant'"></i>
+              </div>
+              <div class="option-details">
+                <div class="option-title">{{ type.label }}</div>
+                <div class="option-description">{{ type.description }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Email -->
       <div class="form-group">
         <label for="email">Correo Electrónico</label>
@@ -15,13 +37,13 @@
             type="email" 
             id="email" 
             formControlName="email"
-            [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"
+            [ngClass]="{ 'is-invalid': (email?.touched || submitted) && email?.errors }"
             placeholder="ejemplo@correo.com"
           >
         </div>
-        <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
-          <div *ngIf="f['email'].errors['required']">El correo es requerido</div>
-          <div *ngIf="f['email'].errors['email']">Ingresa un correo válido</div>
+        <div *ngIf="(email?.touched || submitted) && email?.errors" class="invalid-feedback">
+          <div *ngIf="email?.errors?.['required']">El correo es requerido</div>
+          <div *ngIf="email?.errors?.['email']">Ingresa un correo válido</div>
         </div>
       </div>
 
@@ -37,16 +59,16 @@
             [type]="hidePassword ? 'password' : 'text'"
             id="password" 
             formControlName="password"
-            [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"
+            [ngClass]="{ 'is-invalid': (password?.touched || submitted) && password?.errors }"
             placeholder="Ingresa tu contraseña"
           >
           <button type="button" class="toggle-password" (click)="togglePasswordVisibility()">
             <i class="bi" [class.bi-eye]="hidePassword" [class.bi-eye-slash]="!hidePassword"></i>
           </button>
         </div>
-        <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
-          <div *ngIf="f['password'].errors['required']">La contraseña es requerida</div>
-          <div *ngIf="f['password'].errors['minlength']">La contraseña debe tener al menos 6 caracteres</div>
+        <div *ngif="(password?.touched || submitted) && password?.errors" class="invalid-feedback">
+          <div *ngIf="password?.errors?.['required']">La contraseña es requerida</div>
+          <div *ngIf="password?.errors?.['minlength']">La contraseña debe tener al menos 6 caracteres</div>
         </div>
       </div>
 
@@ -59,11 +81,16 @@
         </label>
       </div>
 
+      <!-- Mensaje de error -->
+      <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+        {{ errorMessage }}
+      </div>
+
       <!-- Botón de Iniciar Sesión -->
       <div class="form-group">
-        <button type="submit" class="btn-login" [disabled]="loading">
-          <span *ngIf="!loading">Iniciar Sesión</span>
-          <span *ngIf="loading" class="spinner-border spinner-border-sm"></span>
+        <button type="submit" class="btn-login" [disabled]="isLoading">
+          <span *ngIf="!isLoading">Iniciar Sesión</span>
+          <span *ngIf="isLoading" class="spinner-border spinner-border-sm"></span>
         </button>
       </div>
 
