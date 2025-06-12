@@ -242,7 +242,7 @@
                   </div>
 
                   <div class="col-md-6">
-                    <label for="email" class="form-label">Correo electrónico (para login) <span class="text-danger">*</span></label>
+                    <label for="email" class="form-label">Correo electrónico <span class="text-danger">*</span></label>
                     <input type="email" class="form-control" id="email" formControlName="email"
                       [ngClass]="{'is-invalid': accountInfo.get('email')?.invalid && (accountInfo.get('email')?.dirty || accountInfo.get('email')?.touched)}">
                     <div class="invalid-feedback" *ngIf="accountInfo.get('email')?.hasError('required')">
@@ -292,10 +292,8 @@
                 <button type="button" class="btn btn-outline-secondary me-2" (click)="clearForm()">
                   <i class="bi bi-eraser me-1"></i> Limpiar
                 </button>
-                <button type="submit" class="btn btn-outline-success" [disabled]="loading || restaurantForm.invalid">
-                  <span *ngIf="loading" class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
-                  <i *ngIf="!loading" class="bi bi-send-fill me-1"></i>
-                  {{ loading ? 'Enviando...' : 'Enviar' }}
+                <button type="submit" class="btn btn-success" [disabled]="loading || restaurantForm.invalid" style="color: white;">
+                  <i class="bi bi-send-fill me-1"></i>Enviar
                 </button>
               </div>
             </div>

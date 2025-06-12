@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { Restaurant, TimeSlot } from '../../core/models/restaurant.model';
 
 // Interfaz para las horas de apertura en formato legible
@@ -27,7 +27,10 @@ export class RestaurantDetailsModalComponent implements OnInit {
   priceRangeText: string = 'No especificado';
   availableHoursList: string[] = [];
 
-  constructor(public activeModal: NgbActiveModal) {}
+  constructor(
+    public activeModal: NgbActiveModal,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     if (!this.restaurant) return;
@@ -97,5 +100,14 @@ export class RestaurantDetailsModalComponent implements OnInit {
     
     console.log(`Reservando en ${restaurant.name} a las ${hora}`);
     this.activeModal.close({ restaurant, hora });
+  }
+
+  navegarAReserva(restaurant: RestaurantDetails | null, event: Event): void {
+    event.preventDefault();
+    if (restaurant?.id) {
+      this.router.navigate(['/reservar', restaurant.id]).then(() => {
+        this.activeModal.close('reserve');
+      });
+    }
   }
 }
