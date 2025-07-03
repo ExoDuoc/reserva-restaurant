@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { LoginButtonComponent } from './shared/components/login-button/login-button.component';
+import { UserSwitcherComponent } from './shared/components/user-switcher/user-switcher.component';
 
 /**
  * Componente raíz de la aplicación.
@@ -17,7 +18,8 @@ import { LoginButtonComponent } from './shared/components/login-button/login-but
     RouterOutlet,
     
     // Componentes
-    LoginButtonComponent
+    LoginButtonComponent,
+    UserSwitcherComponent
   ],
   template: `
     <div class="app-container">
@@ -40,6 +42,9 @@ import { LoginButtonComponent } from './shared/components/login-button/login-but
         <router-outlet></router-outlet>
       </main>
       
+      <!-- User Switcher (solo desarrollo) -->
+      <app-user-switcher></app-user-switcher>
+      
       <!-- Pie de página -->
       <footer class="bg-dark text-white py-4">
         <div class="container">
@@ -60,8 +65,8 @@ import { LoginButtonComponent } from './shared/components/login-button/login-but
             <div class="col-md-3 mb-4 mb-md-0">
               <h5 class="text-uppercase mb-3">Contacto</h5>
               <ul class="list-unstyled">
-                <li class="mb-2"><i class="bi bi-geo-alt me-2"></i> Av. Principal 123, Ciudad</li>
-                <li class="mb-2"><i class="bi bi-telephone me-2"></i> +1 234 567 890</li>
+                <li class="mb-2"><i class="bi bi-geo-alt me-2"></i> Av. Principal 123, Valparaiso</li>
+                <li class="mb-2"><i class="bi bi-telephone me-2"></i> +56 9 54 75 66 06</li>
                 <li class="mb-2"><i class="bi bi-envelope me-2"></i> info&#64;gusto.com</li>
               </ul>
             </div>

@@ -104,10 +104,8 @@ export class RestaurantDetailsModalComponent implements OnInit {
 
   navegarAReserva(restaurant: RestaurantDetails | null, event: Event): void {
     event.preventDefault();
-    if (restaurant?.id) {
-      this.router.navigate(['/reservar', restaurant.id]).then(() => {
-        this.activeModal.close('reserve');
-      });
-    }
+    this.router.navigate(['/auth/login']).then(() => {
+      this.activeModal.close('reserve');
+    });
   }
 }

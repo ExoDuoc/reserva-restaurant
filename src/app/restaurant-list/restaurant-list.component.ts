@@ -125,7 +125,7 @@ export class RestaurantListComponent implements OnInit {
           {
             id: 4,
             name: 'Mar y Sazón',
-            imageUrl: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+            imageUrl: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
             rating: 4.7,
             category: 'Mariscos',
             cuisineType: 'Mariscos',

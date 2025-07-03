@@ -52,6 +52,20 @@ export class AuthService {
     this.currentUserSubject.next(null);
   }
 
+  // Método temporal para simular inicio de sesión
+  simulateLogin(userType: 'client' | 'restaurant' = 'client'): void {
+    const mockUser = {
+      id: '123',
+      email: userType === 'client' ? 'cliente@ejemplo.com' : 'restaurante@ejemplo.com',
+      name: userType === 'client' ? 'Cliente de Prueba' : 'Restaurante de Prueba',
+      type: userType,
+      token: 'mock-jwt-token'
+    };
+    
+    localStorage.setItem('currentUser', JSON.stringify(mockUser));
+    this.currentUserSubject.next(mockUser as User);
+  }
+
   isAuthenticated(): boolean {
     return !!this.currentUserValue?.token;
   }
